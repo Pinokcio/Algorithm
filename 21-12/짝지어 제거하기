@@ -1,0 +1,22 @@
+from collections import deque
+def solution(s):
+    length = len(s)
+    q = deque()
+    cnt = 0
+    for i in range(0, length):
+        if cnt == 0:
+            q.append(s[i])
+            cnt += 1
+            continue
+        if q[cnt-1] == s[i]:
+            q.pop()
+            cnt -= 1
+        else:
+            q.append(s[i])
+            cnt += 1
+    if cnt == 0:
+        return 1
+    return 0
+    
+    """처음엔 string을 사용하여 같은건 제거하고 다시 붙이는 형식으로 코드를 짰으나 같이 붙이는 과정( str[:i] + str[i+2:] 부분)에서 timeout이 발생
+    그래서 deque를 이용하여 stack으로 사용함. stack의 top과 새로 들어오는 값이 같으면 pop하고 아니면 put하는 방식"""
