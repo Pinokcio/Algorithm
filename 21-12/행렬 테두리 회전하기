@@ -1,0 +1,31 @@
+def solution(rows, columns, queries):
+    answer = []
+    mat = [[columns*j + (i+1) for i in range(0, columns)] for j in range(0, rows)]
+    for i in queries:
+        minn = 100000
+        y1 = i[0]-1 
+        x1 = i[1]-1
+        y2 = i[2]-1
+        x2 = i[3]-1
+        tmp1 = mat[y2][x1]
+        tmp2 = mat[y1][x2]
+        for j in range(x1, x2):
+            minn = min(minn, mat[y2][j+1])
+            mat[y2][j] = mat[y2][j+1]  
+        for j in range(x2, x1, -1):
+            minn = min(minn, mat[y1][j-1])
+            mat[y1][j] = mat[y1][j-1]
+        for j in range(y1, y2):
+            minn = min(minn, mat[j+1][x1])
+            mat[j][x1] = mat[j+1][x1]
+        for j in range(y2, y1, -1):
+            minn = min(minn, mat[j-1][x2])
+            mat[j][x2] = mat[j-1][x2]
+        minn = min(minn, tmp2)
+        minn = min(minn, tmp1)
+        mat[y1+1][x2] = tmp2
+        mat[y2-1][x1] = tmp1
+        answer.append(minn)
+    return answer
+    
+    """columns과 rows를 각각 x,y로 잡고 풀었는데 예시를 보니 각각 y,x로 두고 설명하고있어서 헷갈렸음"""
