@@ -1,0 +1,31 @@
+import re
+def solution(new_id):
+    answer = ''
+    
+    new_id = new_id.lower()
+    p = re.compile('[a-z0-9\-\_\.]*')
+    new_id = "".join(p.findall(new_id))
+    flag = 0
+    while flag == 0:
+        if new_id.find('..') != -1:
+            new_id = new_id.replace('..','.')
+        else:
+            flag = 1
+    p = re.compile('^\.|\.$')
+    new_id = re.sub(p,"",new_id)
+    print(new_id)
+    if len(new_id) == 0:
+        new_id = new_id + "a"
+    print(new_id)
+    if len(new_id)>15 :
+        new_id = new_id[0:15]
+    print(new_id)
+    new_id = re.sub(p,"",new_id)
+    print(new_id)
+    while len(new_id)<3 :
+        new_id = new_id + new_id[len(new_id)-1]
+    answer = new_id
+        
+    return answer
+    
+    """정규표현식을 사용하여 문자열 필터링함. 문자열 관련 함수를 많이 사용하였음"""
