@@ -1,0 +1,14 @@
+def dirtn(num):
+    tmp = set()
+    for i in range(1, num+1):
+        if num % i == 0:
+            tmp.add(i)
+    length = len(tmp)
+    if length % 2 == 1:
+        return -1
+    return 1
+def solution(left, right):
+    answer = 0
+    for i in range(left, right + 1):
+        answer += (dirtn(i)*i)
+    return answer
