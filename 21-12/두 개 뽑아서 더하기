@@ -5,4 +5,6 @@ def solution(numbers):
         for j in range(i+1, length):
             answer.append(numbers[i] + numbers[j])
     tmp = set(answer)
-    return list(tmp)
+    return sorted(list(tmp))
+    
+    #set()은 요소들을 정렬시켜주지 않는다!
