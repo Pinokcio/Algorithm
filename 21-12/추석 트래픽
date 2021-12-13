@@ -1,0 +1,27 @@
+import numpy as np
+def solution(lines):
+    answer = 0
+    time = np.array([])
+    start_time = np.array([])
+    end_time = np.array([])
+    for l in lines:
+        hh,mm,ss,sss = int(l[11:13]), int(l[14:16]), int(l[17:19]), int(l[20:23])
+        ts = l[24:-1]
+        tsn = ts.split('.')
+        if len(tsn) > 1:
+            T = int(tsn[0])*1000+int(tsn[1])
+        else :
+            T = int(tsn[0])*1000
+        tmp = ((((hh*60)+mm)*60+ss)*1000+sss)
+        time = np.append(time, tmp)
+        start_time = np.append(start_time, tmp - T + 1)
+        end_time = np.append(end_time, tmp)
+    for c in end_time:
+        cnt = 0
+        for i in range(0,len(time)):
+            if ((end_time[i] >= c) & (start_time[i] <= c + 999)) :
+                cnt = cnt + 1
+        answer = max(answer,cnt)
+    return answer
+    
+    #슬라이스를 이용해 시분초를 나누고 문제에서 제시한 시간만큼의 범위를 설정해서 해당 범위 안에 들어가는 트래픽이 몇개인지 세야함
