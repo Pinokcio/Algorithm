@@ -8,3 +8,5 @@ def solution(numbers):
     return sorted(list(tmp))
     
     #set()은 요소들을 정렬시켜주지 않는다!
+    #return sorted(list(tmp)) -> retrun sorted(tmp)도 가능, sorted 함수는 시퀀스와 컬렉션 모두 정렬시켜서 목록으로 반환해줌
+    
