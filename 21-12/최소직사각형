@@ -1,0 +1,13 @@
+def solution(sizes):
+    answer = 0
+    len_y = len(sizes)
+    for i in range(0, len_y):
+        if sizes[i][1] > sizes[i][0]:
+            sizes[i][1], sizes[i][0] = sizes[i][0], sizes[i][1]
+    max_x = 0
+    max_y = 0
+    for i in range(0,len_y):
+        max_x = max(max_x, sizes[i][0])
+        max_y = max(max_y, sizes[i][1])
+    answer = max_x * max_y
+    return answer
