@@ -1,0 +1,10 @@
+def solution(price, money, count):
+    answer = -1
+    sumn = 0
+    for i in range(1, count+1):
+        sumn += i
+    sumn *= price
+    if sumn > money:
+        return sumn - money
+    else:
+        return 0
