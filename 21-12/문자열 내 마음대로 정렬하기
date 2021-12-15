@@ -1,0 +1,19 @@
+def solution(strings, n):
+    length = len(strings)
+    for i in range(0, length):
+        strings[i] = (strings[i],strings[i][n] + strings[i][:n] + strings[i][n+1:])
+    strings = sorted(strings, key = lambda x : x[1])
+    for i in range(0, length):
+        strings[i] = strings[i][0]
+    return strings
+    
+    
+# 또 다른 해결법
+def solution(strings, n):
+    strings.sort()
+    strings.sort(key = lambda x : x[n])
+    return strings
+    
+#n번째 문자열을 기준으로 그 뒤부터 사전순 정렬인줄 알았더니 n이 같으면 n을 제외한 나머지 문자열에 대해서 사전순으로 정렬하는 것이었다.
+#첫번째 해결법은 n번째 문자열을 문자열의 가장 앞에 붙여서 정렬했다. 후에 리턴만 제대로된 문자열을 리턴해주면 끝
+#두번째 해결법은 우선 전체적으로 먼저 사전순 정렬해준 뒤, n번째 문자를 기준으로 정렬시켜줬다. 두 번째가 더 효율적이다.
