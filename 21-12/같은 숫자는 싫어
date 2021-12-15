@@ -1,0 +1,9 @@
+def solution(arr):
+    answer = []
+    length = len(arr)
+    bef = -1
+    for i in range(0, length):
+        if arr[i] != bef :
+            answer.append(arr[i])
+        bef = arr[i]
+    return answer
