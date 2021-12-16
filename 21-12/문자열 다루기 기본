@@ -1,0 +1,13 @@
+import re
+def solution(s):
+    p = re.compile('[0-9]+')
+    length = len(s)
+    if p.search(s) == None :
+        return False
+    elif (p.search(s).span() == (0,length)) and (length == 4 or length == 6):
+        return True
+    else :
+        return False
+        
+   #아직 정규표현식에 익숙치 않다. match는 문자열의 처음부터 검사해서 일치하는 곳까지를 match object로 리턴하고 search는 문자열 전체에 거쳐 일치하는 곳을 match object로 리턴한다
+   #.span()은 match object의 메소드 중 하나로 match object에 해당하는 범위를 tuple 형태로 리턴해준다.
