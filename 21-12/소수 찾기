@@ -1,0 +1,32 @@
+from math import sqrt, floor
+def isPrime(n):
+    l = floor(sqrt(n)) + 1
+    for i in range(2, l):
+        if n % i == 0:
+            return False
+    else :
+        return True
+    
+def solution(n):
+    max_n = 1000001;
+    li = [0 for i in range(0, n+1)]
+    li[2] = 1
+    cnt = 1;
+    for i in range(3, n+1):
+        if li[i] == 1 :
+            continue
+        if isPrime(i):
+            cnt += 1
+            lim = n//i
+            for j in range(0, lim+1):
+                li[i * j] = 1
+    return cnt
+
+"""
+합성수 x에 대해 x = m * n
+m >= n 이라 가정하면 m^2 >= x >= n^2
+m >= sqrt(x) >= n
+따라서 합성수 x는 루트x보다 큰 수m와 루트x보다 작은 수n의 곱으로 이루어져있음.
+즉, n보다 작은 수들(i)에 한하여 x가 나눠진다면 해당i는 x의 약수가 되며 그 i는 i*j = x를
+만족하는 어떠한 수 j와 한 쌍을 이룰 것이다. 또한 이때 x는 약수가 존재하므로 소수가 아니다.  
+"""
