@@ -1,0 +1,11 @@
+def solution(s):
+    answer = True
+    s = s.lower()
+    p_c = 0
+    y_c = 0
+    for i in s:
+        if i == 'p':
+            p_c += 1
+        elif i == 'y':
+            y_c += 1
+    return p_c == y_c
