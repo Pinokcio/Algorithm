@@ -1,0 +1,7 @@
+import math
+def solution(n):
+    answer = 0
+    m = pow(math.floor(math.sqrt(n)),2)
+    if m == n:
+        return pow(math.floor(math.sqrt(n))+1,2)
+    return -1
