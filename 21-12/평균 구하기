@@ -1,0 +1,6 @@
+def solution(arr):
+    answer = 0
+    n = len(arr)
+    for i in range(0, n):
+        answer += arr[i]
+    return answer/n
