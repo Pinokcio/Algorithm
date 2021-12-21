@@ -1,0 +1,29 @@
+from collections import deque
+def solution(s):
+    answer = []
+    s = s[1:-1]
+    length = len(s)
+    li = []
+    st = set()
+    flag = 0
+    
+    for i in range(0, length):
+        if not str.isdigit(s[i]):
+            flag = 0
+        if s[i] == "{":
+            st = set()
+        elif str.isdigit(s[i]) and flag == 0:
+            n = i+1
+            while str.isdigit(s[i:n]):
+                n += 1
+            st.add(int(s[i:n-1]))
+            flag = 1
+        elif s[i] == "}":
+            li.append(st)
+            
+    li.sort(key = lambda x : len(x))
+    bef = set()
+    for i in li:
+        answer.append(list(i-bef)[0])
+        bef = i
+    return answer
