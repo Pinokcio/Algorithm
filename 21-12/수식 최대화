@@ -1,0 +1,52 @@
+import math
+def solution(expression):
+    answer = 0
+    res = []
+    dic = [{0 : "*", 1 : "+", 2 : "-"},
+           {0 : "*", 1 : "-", 2 : "+"},
+           {0 : "+", 1 : "*", 2 : "-"},
+           {0 : "+", 1 : "-", 2 : "*"},
+           {0 : "-", 1 : "+", 2 : "*"},
+           {0 : "-", 1 : "*", 2 : "+"}]
+    expression += 'e'
+    length = len(expression)
+    li = []
+    cur = 0
+    for i in range(0, length):
+        if not str.isdigit(expression[cur:i+1]):
+            li.append(expression[cur:i])
+            if i != length-1 :
+                li.append(expression[i:i+1])
+            cur = i+1
+    
+    digit_tmp = []
+    op_tmp = []
+    for i in li:
+        if str.isdigit(i):
+            digit_tmp.append(i)
+        else:
+            op_tmp.append(i)
+    for i in range(0, 6):
+        digit = digit_tmp[:]
+        op = op_tmp[:]
+        for j in range(0, 3):
+            len_op = len(op)
+            c = 0
+            while True:
+                if c >= len_op :
+                    break
+                if op[c] == dic[i][j]:
+                    tmp = [digit[c],op[c],digit[c+1]]
+                    num = eval("".join(tmp))
+                    del digit[c]
+                    del digit[c]
+                    digit.insert(c, str(num))
+                    del op[c]
+                    len_op -= 1
+                else:
+                    c += 1
+        res.append(abs(int(digit[0])))
+        answer = max(res)
+    return answer
+    
+    #isdigit함수를 통해 expression에서 숫자와 operation을 구분하고 연산자 우선순위로 지정될 수 있는 총 6가지 경우의 수에 대해 계산해준 결과를 list에 저장한후 max 출력
