@@ -1,0 +1,20 @@
+import heapq as hq
+from collections import deque
+def solution(priorities, location):
+    answer = 0
+    li = []
+    de = deque()
+    for i,e in enumerate(priorities):
+        li.append((-e, i))
+    hq.heapify(li)
+    length = len(priorities)
+    for i,e in enumerate(priorities):
+        de.append((i,e))
+    for i in range(0, length):
+        tmp = -(hq.heappop(li)[0])
+        tmp_2 = de.popleft()
+        while tmp != tmp_2[1]:
+            de.append(tmp_2)
+            tmp_2 = de.popleft()
+        if tmp_2[0] == location:
+            return i+1 
