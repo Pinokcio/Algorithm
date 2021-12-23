@@ -1,0 +1,33 @@
+from collections import deque
+d = [[0, 1], [-1, 0], [0, -1], [1, 0]]
+def bfs(maps, y_len, x_len):
+    q = deque()
+    memo = [[0]*x_len for i in range(0, y_len)]
+    q.append((0, 0, 1))
+    cnt = 1
+    while q:
+        tmp = q.popleft()
+        y = tmp[0]
+        x = tmp[1]
+        cnt = tmp[2]
+        if y == (y_len - 1) and x == (x_len - 1):
+            return cnt
+        for i in range(0, 4):
+            y_temp = y + d[i][0]
+            x_temp = x + d[i][1]    
+            if 0<=y_temp<y_len and 0<=x_temp<x_len and maps[y_temp][x_temp] and memo[y_temp][x_temp] == 0:
+                q.append((y_temp, x_temp, cnt+1))
+                memo[y_temp][x_temp] = 1
+    
+def solution(maps):
+    answer = 0
+    y_len = len(maps)
+    x_len = len(maps[0])
+    answer = bfs(maps, y_len, x_len)
+    if answer == None:
+        return -1
+    return answer
+    
+    #처음엔 dfs로 풀었음. 하지만 dfs로 풀 경우 모든 경우에서 끝까지 다 수색하기 때문에 최단거리는 알 수 있어도 시간이 오래걸림(최단거리를 찾은 이후에도 계속 수색하기 때문).
+    #bfs로 변경하였으나 memoization을 확인하는 memo 변수 검사를 queue에 넣을 때가 아닌 꺼낼 때 1로 갱신시켰음. 이럴 경우 queue에 이미 들어가있는 좌표에 대해서도 
+    #중복으로 들어갈 수 있으므로 시간상 손해를 보게 됨. 따라서 memo 갱신을 queue에 append 할 때로 바꾸어 효율성 문제를 해결함
