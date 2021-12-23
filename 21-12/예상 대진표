@@ -1,0 +1,14 @@
+import math
+def solution(n,a,b):
+    answer = 1
+    k = int(math.log2(n))
+    if b < a:
+        a,b = b, a
+    
+    for i in range(0, k):
+        a = int(math.ceil(a/2))
+        b = int(math.ceil(b/2))
+        if a == b :
+            break
+        answer += 1
+    return answer
