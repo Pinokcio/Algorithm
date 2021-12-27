@@ -1,0 +1,39 @@
+from itertools import combinations
+from bisect import bisect_left
+def solution(info, query):
+    answer = []
+    dic = {}
+    for i in info:
+        tmp = i.split()
+        num = int(tmp[-1])
+        tmp = tmp[:-1]
+        li = []
+        for j in range(0, 5):
+            for c in combinations(tmp, j):
+                st = "".join(c)
+                if st in dic:
+                    dic[st].append(num)
+                else:
+                    dic[st] = [num]
+    for i in dic:
+        dic[i].sort()
+    
+    for i in query:
+        tmp = i.split(" and ")
+        tmp_tmp = tmp[-1].split()
+        tmp[-1] = tmp_tmp[0]
+        num = int(tmp_tmp[1])
+        if "".join(tmp).replace("-", "") in dic:
+            d = dic["".join(tmp).replace("-", "")]
+            answer.append(len(d) - bisect_left(d, num))
+        else:
+            answer.append(0)
+    return answer
+    
+    #푸는데 상당히 애를 먹은 문제...
+    #첫 트라이에서는 단순히 info, query 문자열을 잘라서 조건에 맞는 애들끼리 수를 비교하는 방법 사용
+    #효율성 문제로 두번째 트라이에서는 set을 사용해봄. 이 또한 효율성 문제 발생
+    #결국 다른 사람의 풀이를 봄
+    #info와 query에 입력값이 정해져있는 db 관리 문제였으므로 info문으로 만들 수 있는 모든 경우의 수를 키값으로 하여 각각에 해당하는 value 값을 넣어주어 dictionary로 관리한다.
+    #그 후 query문에 해당하는 key값이 dic에 존재할 경우 해당 값보다 큰 값의 개수만큼이 해당 query에서의 answer이 된다.
+    #bisect 패키지를 이용하여 손쉽게 이분탐색을 실행할 수 있다.
