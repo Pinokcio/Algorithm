@@ -1,0 +1,33 @@
+from collections import deque
+def isright(s):
+    q = deque()
+    for i in s:
+        if i == '[' or i == '(' or i == '{':
+            q.append(i)
+        else:
+            if not q:
+                return False
+            if i == ']':
+                tmp = q.pop()
+                if tmp != '[':
+                    return False
+            elif i == ')':
+                tmp = q.pop()
+                if tmp != '(':
+                    return False
+            elif i == '}':
+                tmp = q.pop()
+                if tmp != '{':
+                    return False
+    if q:
+        return False
+    return True
+
+def solution(s):
+    answer = 0
+    q = deque(s)
+    for i in range(0, len(s)):
+        if isright(list(q)):
+            answer += 1
+        q.append(q.popleft())
+    return answer
