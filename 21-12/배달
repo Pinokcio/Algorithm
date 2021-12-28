@@ -1,0 +1,34 @@
+import heapq as hq
+def solution(N, road, K):
+    answer = 0
+    li = [[9999999]*(N+1) for i in range(0, N+1)]
+    for i in road:
+        li[i[0]][i[1]] = min(li[i[0]][i[1]],i[2])
+        li[i[1]][i[0]] = min(li[i[1]][i[0]],i[2])
+    for i in range(1, N+1):
+        li[i][i] = 0
+    d = [9999999]*(N+1)
+    d[1] = 0
+    
+    #초기값 선언부
+    
+    q = []
+    hq.heappush(q, (d[1], 1)) #1부터 시작
+    
+    while q:
+        dist, now = hq.heappop(q)
+        if d[now] < dist: #이미 최적의 거리일 경우 다시 들릴 필요가 없음
+            continue
+        for i in range(2, N+1): 
+            if d[i] > dist + li[now][i]: #최소 거리를 갱신할 여지가 있는 노드는 갱신 후 힙큐에 넣어줌
+                d[i] = dist + li[now][i]
+                hq.heappush(q, (dist + li[now][i], i))
+            
+    for i in range(1, N+1):
+        if d[i] <= K:
+            answer+=1
+    return answer
+    
+    #바보처럼 다익스트라를 못짜서 헤맸음...
+    #파이썬에서 다익스트라를 짤 때 핵심은 heapq 모듈을 사용하는 것. 이 때 원소는 튜플 형태로 넣는데 튜플의 첫번째 값을 min 혹은 max로 정렬하고자 하는 값으로 넣어야한다.
+    
