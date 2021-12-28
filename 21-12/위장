@@ -1,0 +1,26 @@
+from itertools import combinations
+import math
+def solution(clothes):
+    answer = 0
+    dic = {}
+    for s in clothes:
+        if s[1] in dic:
+            dic[s[1]].append(s[0])
+        else:
+            dic[s[1]] = [s[0]]
+    li = []
+    for d in dic:
+        li.append(len(dic[d]))
+    if len(li) == 30:
+        return 1073741823
+    for i in range(1, len(li)+1):
+        for c in combinations(li, i):
+            tmp = 1
+            for j in c:
+                tmp *= j
+            answer += tmp
+            
+    return answer
+    #옷 종류에 따라 dictionary에 저장해주고 각 개수를 뽑아내 조합을 구하는 문제였다.
+    #옷 개수가 최대 30벌이므로 만약 30벌 전부 종류가 다른 옷이면 30c1 + 30c2 + 30c3 + ... + 30c30 = 2^30 - 1 = 1073741823 가 나와 타임아웃이 뜬다. 
+    #이 경우만 따로 예외처리해주어서 해결하였다.
