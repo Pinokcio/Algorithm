@@ -1,0 +1,61 @@
+from collections import deque
+
+
+def listtodequetolist(m, n, board):
+    q1 = []
+    for i in range(m):
+        de = deque()
+        for j in range(n):
+            if board[i][j] == "0":
+                continue
+            de.append(board[i][j])
+        for j in range(n - len(de)):
+            de.appendleft("0")
+        q1.append(list(de))
+    return q1
+
+
+def findsquare(m, n, board):
+    li = []
+    for i in range(m-1):
+        for j in range(n-1):
+            if board[i][j] != "0" and board[i][j] == board[i][j+1] == board[i+1][j] == board[i+1][j+1]:
+                li.append((i,j))
+                li.append((i,j+1))
+                li.append((i+1,j))
+                li.append((i+1,j+1))
+    return li
+
+
+def solution(m, n, board):
+    answer = 0
+    tmp = []
+    tmptmp = []
+    for i in range(m):
+        temp = list(board[i])
+        tmptmp.append(temp)
+    for i in range(n):
+        de = deque()
+        for j in range(m):
+            de.append(tmptmp[j][i])
+        tmp.append(list(de))
+        
+    
+    bef = []
+    while bef != tmp :
+        bef = tmp[:]
+        li = findsquare(len(tmp), len(tmp[0]), tmp)
+        for i in li:
+            tmp[i[0]][i[1]] = "0"
+        tmp = listtodequetolist(len(tmp), len(tmp[0]),tmp)
+        
+        
+    for i in range(len(tmp)):
+        for j in range(len(tmp[0])):
+            if tmp[i][j] == "0":
+                answer += 1
+    return answer
+    
+    #MxN matrix를 각 문자열로 자르고 traspose 해줘서 NxM으로 만든다. (y값이 밀리는 구조인데 이를 queue로 구현하기 위해서)
+    #같은 것끼리 square에 묶여있으면 해당 좌표를 list로 구성하여 해당 좌표에 위치한 값을 "0"으로 바꾼다. 이후 "0"인 자리는 밀어서 채워주고 빈칸은 "0"으로 채워준다.
+    #퍼즐이 터지기 전과 후를 비교하여 같으면 while문을 멈추고 터진 블록 개수를 리턴한다.
