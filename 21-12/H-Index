@@ -1,0 +1,13 @@
+def solution(citations):
+    answer = 0
+    used = [0]*10001
+    for i in citations:
+        used[i] += 1
+    sumn = 0
+    all_cit = len(citations)
+    for i in range(0, 10001):
+        if all_cit - sumn >= i : # i번 이상 인용된 논문의 총 수
+            answer = i
+        sumn += used[i]# used[i] = i번 인용됨, sumn = i번 이하로 인용된 논문의 총 수
+        
+    return answer
