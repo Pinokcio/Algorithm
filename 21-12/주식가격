@@ -1,0 +1,22 @@
+from collections import deque
+def solution(prices):
+    #자신보다 작은 숫자가 얼마나 뒤에 나오나~
+    answer = [0]*len(prices)
+    stack = deque()
+    for e,p in enumerate(prices):
+        if not stack:
+            stack.append((p,e))
+        else:
+            if stack[-1][0] <= p:
+                stack.append((p,e))
+            else:
+                while stack and (stack[-1][0] > p):
+                    tmp = stack.pop()
+                    answer[tmp[1]] = e - tmp[1]
+                stack.append((p,e))
+    while stack:
+        tmp = stack.pop()
+        answer[tmp[1]] = len(prices)-1-tmp[1]
+    return answer
+    
+    #어떤 list에서 interation을 도는 동안 최초로 자신의 값보다 크거나 작은 값은 찾아야하는 문제는 stack으로 풀면 좋다.
