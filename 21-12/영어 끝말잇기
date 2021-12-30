@@ -1,0 +1,22 @@
+def solution(n, words):
+    answer = [0,0]
+    st = set()
+    bef = ""
+    for e,s in enumerate(words):
+        flag = 0
+        if e != 0 and s[0] != bef: #끝말잇기가 안될 경우
+            flag = 1
+        if s not in st: # 중복되지 않은 단어
+            st.add(s)
+        else: #중복된 단어
+            flag = 1
+        if len(s) == 1: #한 글자인 단어
+            flag = 1
+        if flag == 1:
+            answer[0] = e%n + 1
+            answer[1] = e//n + 1
+            break
+        bef = s[-1]
+            
+    
+    return answer
