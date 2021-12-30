@@ -1,0 +1,28 @@
+from collections import deque
+def solution(n):
+    answer = []
+    li = [[0]*n for i in range(n)]
+    cur_x = 0
+    cur_y = -1
+    cnt = 0
+    for i in range(n):
+        for j in range(n-i):
+            cnt += 1
+            if i%3 == 0:
+                cur_y += 1
+                li[cur_y][cur_x]= cnt
+            elif i%3 == 1:
+                cur_x += 1
+                li[cur_y][cur_x] = cnt
+            else:
+                cur_x -= 1
+                cur_y -= 1
+                li[cur_y][cur_x] = cnt
+                
+    for i in range(n):
+        for j in range(n):
+            if li[i][j] == 0:
+                continue
+            else:
+                answer.append(li[i][j])
+    return answer
