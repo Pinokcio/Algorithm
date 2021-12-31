@@ -1,0 +1,23 @@
+from collections import deque
+def solution(people, limit):
+    answer = 0
+    people.sort()
+    q = deque(people)
+    while q:
+        minn = q[0]
+        maxn = q[-1]
+        if minn + maxn <= limit:
+            if len(q) > 1:
+                q.popleft()
+                q.pop()
+            else:
+                q.pop()
+        else:
+            q.pop()
+        answer += 1
+        
+    return answer
+    
+    #문제를 제대로 안읽어서 해맸음 ㅠㅠㅠ
+    #보트에는 최대 2명까지만 탑승 가능
+    #최소 최대 더한 값이 limit을 초과하면 최대값만 pop하고 아니면 둘다 pop함. 이때 최대 최대 index가 같을 수 있으므로 길이가 2미만인 경우엔 한번만 pop함
