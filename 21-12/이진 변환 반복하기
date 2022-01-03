@@ -1,0 +1,17 @@
+def getzero(s):
+    return len(s.replace('1',''))
+def strtobinlen(s):
+    return bin(len(s.replace('0', '')))[2:] 
+def solution(s):
+    answer = []
+    tmp = getzero(s)
+    summ = tmp
+    cnt = 0
+    while s != '1':
+        cnt += 1
+        s = strtobinlen(s)
+        tmp = getzero(s)
+        summ += tmp
+    answer.append(cnt)
+    answer.append(summ)
+    return answer
