@@ -1,0 +1,55 @@
+def solution(dirs):
+    answer = 0
+    cur_x = 0
+    cur_y = 0
+    st = set()
+    for d in dirs:
+        if d == 'U':
+            if cur_y + 1 > 5:
+                continue
+            tmp = (cur_x, cur_y, cur_x, cur_y + 1)
+            tmp_t = (cur_x, cur_y + 1, cur_x, cur_y)
+            if tmp in st:
+                pass
+            else:
+                st.add(tmp)
+                st.add(tmp_t)
+                answer += 1
+            cur_y += 1
+        elif d == 'D':
+            if cur_y - 1 < -5:
+                continue
+            tmp = (cur_x, cur_y, cur_x, cur_y - 1)
+            tmp_t = (cur_x, cur_y - 1, cur_x, cur_y)
+            if tmp in st:
+                pass
+            else:
+                st.add(tmp)
+                st.add(tmp_t)
+                answer += 1
+            cur_y -= 1
+        elif d == 'L':
+            if cur_x - 1 < -5:
+                continue
+            tmp = (cur_x - 1, cur_y, cur_x, cur_y)
+            tmp_t = (cur_x, cur_y, cur_x - 1, cur_y)
+            if tmp in st:
+                pass
+            else:
+                st.add(tmp)
+                st.add(tmp_t)
+                answer += 1
+            cur_x -= 1
+        elif d == 'R':
+            if cur_x + 1 > 5:
+                continue
+            tmp = (cur_x + 1, cur_y, cur_x, cur_y)
+            tmp_t = (cur_x, cur_y, cur_x + 1, cur_y)
+            if tmp in st:
+                pass
+            else:
+                st.add(tmp)
+                st.add(tmp_t)
+                answer += 1
+            cur_x += 1
+    return answer
