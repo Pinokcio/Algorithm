@@ -1,0 +1,44 @@
+def checkbox(x, y, cnt, arr):
+    check = arr[y][x]
+    for i in range(y, y+cnt):
+        for j in range(x, x+cnt):
+            if arr[i][j] != check:
+                return False
+    else:
+        return True
+            
+def solution(arr):
+    answer = []
+    length = len(arr)
+    memo = [[0]*length for i in range(length)]
+    cnt = length
+    cnt_1 = 0
+    cnt_0 = 0
+    for i in range(length):
+        for j in range(length):
+            if arr[i][j] == 1:
+                cnt_1 += 1
+            else:
+                cnt_0 += 1
+                
+    while cnt > 0:
+        y = 0
+        for j in range(int(length / cnt)):
+            x = 0
+            for i in range(int(length / cnt)):
+                if memo[y][x] == 0 and checkbox(x, y, cnt, arr):
+                    if arr[y][x] == 1:
+                        cnt_1 -= cnt*cnt
+                        cnt_1 += 1
+                    else:
+                        cnt_0 -= cnt*cnt
+                        cnt_0 += 1
+                    for k in range(y, y+cnt):
+                        for h in range(x, x+cnt):
+                            memo[k][h] = 1
+                x += cnt
+            y += cnt
+        cnt = cnt//2
+    answer.append(cnt_0)
+    answer.append(cnt_1)
+    return answer
