@@ -1,0 +1,20 @@
+def solution(skill, skill_trees):
+    answer = 0
+    dic = {}
+    
+    for e,i in enumerate(list(skill)):
+        dic[i] = e
+    
+    for i in skill_trees:
+        flag = 0
+        for j in list(i):
+            if j in dic:
+                if dic[j] == flag:
+                    flag += 1
+                    continue
+                else:
+                    break
+        else:
+            answer += 1
+            
+    return answer
