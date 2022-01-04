@@ -1,0 +1,16 @@
+def solution(board):
+    answer = 0
+    len_y = len(board)
+    len_x = len(board[0])
+    
+    board_tmp = board[:]
+    for y in range(1, len_y):
+        for x in range(1, len_x):
+            tmp = [board_tmp[y-1][x]+1, board_tmp[y][x-1]+1, board_tmp[y-1][x-1]+1]
+            if board[y][x] !=0:
+                board_tmp[y][x] = min(tmp)
+    for y in range(len_y):
+        answer = max(answer,max(board_tmp[y]))
+    return answer*answer
+    
+    #누적의 개념이 포인트. dp로도 풀어봐야 할 듯
