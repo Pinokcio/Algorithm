@@ -1,0 +1,16 @@
+def solution(files):
+    answer = []
+    length = len(files)
+    file = []
+    for e,f in enumerate(files):
+        cur = 0
+        while (not str.isdigit(f[cur])):
+            cur += 1
+        end = cur
+        while end < len(f) and str.isdigit(f[end]):
+            end += 1
+        file.append((f[:cur], f[cur:end], f[end:]))
+    file.sort(key = lambda x : (str.lower(x[0]), int(x[1])))
+    for i in range(len(file)):
+        answer.append("".join(file[i]))
+    return answer
