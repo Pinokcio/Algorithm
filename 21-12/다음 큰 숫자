@@ -1,0 +1,8 @@
+def solution(n):
+    answer = 0
+    len_1 = len(bin(n)[2:].replace("0",""))
+    for i in range(n+1, 1000001):
+        if len(bin(i)[2:].replace("0","")) == len_1:
+            answer = i
+            break
+    return answer
