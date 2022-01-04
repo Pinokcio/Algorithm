@@ -1,0 +1,20 @@
+from collections import deque
+def get_n_num(n, num):
+    dic = {0:"0", 1:"1", 2:"2", 3:"3", 4:"4", 5:"5", 6:"6", 7:"7", 8:"8", 9:"9",10:"A", 11:"B", 12:"C", 13:"D", 14:"E", 15:"F"}
+    q = deque()
+    while True:
+        q.appendleft(dic[num%n])
+        num = num//n
+        if num == 0:
+            break
+    return list(q)
+def solution(n, t, m, p):
+    answer = []
+    tmp = []
+    cur = 0
+    while len(tmp)<1000001:
+        tmp.extend(get_n_num(n, cur))
+        cur += 1
+    for i in range(t):
+        answer.append(tmp[p-1+i*m])
+    return "".join(answer)
