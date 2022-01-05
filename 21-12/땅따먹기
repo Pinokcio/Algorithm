@@ -1,0 +1,25 @@
+import sys
+sys.setrecursionlimit(1000001)
+def dpsol(dp, land, n, m):
+    if dp[n][m] > 0: #이미 구한 경우
+        return dp[n][m]
+    maxn = 0
+    for i in range(0, 4):
+        if i != m:
+            maxn = max(maxn, dpsol(dp, land, n-1, i))
+    dp[n][m] = land[n][m] + maxn
+    return dp[n][m]
+    
+def solution(land):
+    answer = 0
+    dp = [[0]*4 for i in range(len(land))]
+    dp[0] = land[0][:]
+    for i in range(0,4):
+        tmp = dpsol(dp, land, len(land)-1, i)
+        answer = max(answer,tmp)
+    return answer
+    
+    #dp문제. 
+    #top-down : 큰문제를 풀다가 작은문제가 아직 풀리지 않았으면 그 때 작은문제를 푸는 방법
+    #bottom-up : 작은 문제부터 차근차근 풀어가는법
+    #본인은 top-down으로 풀었으며, import sys / sys.setrecursionlimit(1000001)을 써주지 않을 시 재귀 횟수가 한정되어 런타임에러가 발생함
