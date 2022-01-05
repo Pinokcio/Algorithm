@@ -1,0 +1,16 @@
+def solution(arr1, arr2):
+    answer = []
+    len_x1 = len(arr1[0])
+    len_x2 = len(arr2[0])
+    len_y1 = len(arr1)
+    len_y2 = len(arr2)
+    tmp = 0
+    for y in range(len_y1):
+        li = []
+        for x in range(len_x2):
+            tmp = 0
+            for n in range(len_x1):
+                tmp += (arr1[y][n]*arr2[n][x])
+            li.append(tmp)
+        answer.append(li)
+    return answer
