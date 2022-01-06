@@ -1,0 +1,62 @@
+def solution(grid):
+    dicL = {'L':'D', 'R':'U', 'U':'L', 'D':'R'}
+    dicR = {'L':'U', 'R':'D', 'U':'R', 'D':'L'}
+    answer = []
+    len_x = len(grid[0])
+    len_y = len(grid)
+    st = set()
+    for i_y in range(len_y):
+        for i_x in range(len_x):
+            for i_d in range(4):
+                tmp_d = ""
+                if i_d == 0:
+                    tmp_d = 'L'
+                elif i_d == 1:
+                    tmp_d = 'R'
+                elif i_d == 2:
+                    tmp_d = 'U'
+                else:
+                    tmp_d = 'D'
+                tmp = (i_y,i_x,tmp_d)
+                first = tmp
+                cnt = 0
+                while True:
+                    y = tmp[0]
+                    x = tmp[1]
+                    d = tmp[2]
+                    if d == 'L':
+                        x -= 1
+                    elif d == 'R':
+                        x += 1
+                    elif d == 'U':
+                        y += 1
+                    elif d == 'D':
+                        y -= 1
+                    if x >= len_x:
+                        x = 0
+                    if y >= len_y:
+                        y = 0
+                    if x < 0:
+                        x = len_x - 1
+                    if y < 0:
+                        y = len_y - 1
+                    if grid[y][x] == 'L':
+                        tmp = (y, x, dicL[d])
+                    elif grid[y][x] == 'R':
+                        tmp = (y, x, dicR[d])
+                    else:
+                        tmp = (y, x, d)
+                    cnt += 1
+                    if tmp in st:
+                        break
+                    else:
+                        st.add(tmp)
+                    if cnt > pow(len_x*len_y, 2):
+                        break
+                    if tmp == first:
+                        answer.append(cnt)
+                        break
+    answer.sort()
+    return answer
+    
+    #시뮬레이션 문제였습니당
