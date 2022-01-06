@@ -1,0 +1,17 @@
+def solution(s):
+    answer = []
+    flag = 1
+    for i in s:
+        if i == " ":
+            flag = 1
+            answer.append(i)
+            continue
+        else:
+            if flag:
+                answer.append(str.upper(i))
+            else:
+                answer.append(str.lower(i))
+            flag = 0
+    return "".join(answer)
+    
+    #문자열 맨 처음에 " "이 나올 수도 있는건 좀 억까가 아닌가..
