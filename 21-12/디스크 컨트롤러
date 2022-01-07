@@ -1,0 +1,30 @@
+import heapq as hq
+def solution(jobs):
+    answer = 0
+    len_j = len(jobs)
+    jobs.sort(key = lambda x : [x[0], x[1]])
+    hq.heapify(jobs)
+    process = []
+    hq.heapify(process)
+    cur_time = 0
+    cur = [0,0,0]
+    excute_t = 0
+    process_t = 0
+    while True: #남은 작업이 있으면 프로세스에 대기시키고 현재 작업중인 프로그램이 없으면 가장 앞에있는 작업을 실행한다. 이때 프로세스에 대기한 시간을 answer에 더해준다.
+        #현재 시간보다 시작시간이 이른 작업 중 실행시간이 가장 짧은 것
+        excute_t -= 1
+        if jobs and jobs[0][0] <= cur_time: #남은 작업이 있으면 프로세스에 대기
+            tmp = hq.heappop(jobs)
+            hq.heappush(process, [tmp[1], tmp[0], cur_time])
+        
+        if process and excute_t <= 0:#현재 작업중인 프로그램이 없으면 대기 중인 프로그램 중 가장 앞에있는 작업을 실행
+            cur = hq.heappop(process)
+            answer += (cur_time - cur[1])
+            excute_t = cur[0]
+            process_t += excute_t
+        if not jobs and not process and excute_t<=0:
+            break
+        cur_time += 1
+    return (answer + process_t)//len_j
+    # 문제 구림... 요구사항이 제대로 제시되어있지 않음.
+    # 한 번에 하나의 요청만 받는다고 해서 한 타임에 프로세스에 프로그램 하나만 올릴 수 있는 줄 알았는데 프로세스에 올리는건 한 번에 가능했음.. 이거때문에 괜히 시간 날렸다
