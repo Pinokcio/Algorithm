@@ -1,0 +1,42 @@
+import heapq as hq
+def solution(operations):
+    answer = []
+    minh = []
+    hq.heapify(minh)
+    maxh = []
+    hq.heapify(maxh)
+    cnt = 0
+    
+    for op in operations:
+        tmp = op.split()
+        if tmp[0] == "I":
+            hq.heappush(minh, int(tmp[1]))
+            hq.heappush(maxh, -int(tmp[1]))
+            cnt += 1
+        elif tmp[0] == "D":
+            if cnt == 0:
+                continue
+            elif str.isdigit(tmp[1][0]):
+                hq.heappop(maxh)
+                cnt -= 1
+                continue
+            else:
+                hq.heappop(minh)
+                cnt -= 1
+            if cnt == 0:
+                minh = []
+                hq.heapify(minh)
+                maxh = []
+                hq.heapify(maxh)
+    if cnt == 0:
+        return [0,0]
+    answer.append(-hq.heappop(maxh))
+    answer.append(hq.heappop(minh))
+    return answer
+    
+    #힙큐를 하나는 maxheap, 다른 하나는 minheap으로 사용한다.
+    #삽입은 양쪽 큐에 모두 실행한다.
+    #최댓값 삭제 최솟값 삭제는 각각 큐에서 진행하되 총 갯수는 합산하여 같이 계산한다.
+    #총 갯수가 0이면 삭제 명령은 무시한다.
+    #이렇게 운용할 때, 삽입 5번 최댓값삭제 2번 최솟값삭제 3번을 할 경우, 계산상으로는 큐가 비어있는것처럼 보이기 위해 "총 갯수"를 따로 두었지만 실제로는 큐가 비어있지 않은 상태이다.
+    #따라서 새로이 min값을 삽입하고 삭제할 경우 기존에 있던 값이 대신 삭제될 수 있다. 따라서 "총 갯수"가 0이 될 때마다 min큐 max큐를 모두 비어있는 큐로 초기화시켜줄 필요가 있다.
