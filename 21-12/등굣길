@@ -1,0 +1,22 @@
+def dpsol(dp, m, n, puddles):
+    if [m+1, n+1] in puddles:
+        return 0
+    if dp[n][m] != 0:
+        return dp[n][m]
+    else:
+        if m-1>=0 and n-1>=0:
+            dp[n][m] = (dpsol(dp,m-1,n,puddles) + dpsol(dp,m,n-1,puddles))%1000000007
+        elif m-1<0 and n-1>=0:
+            dp[n][m] = (dpsol(dp,m,n-1,puddles))%1000000007
+        elif m-1>=0 and n-1<0:
+            dp[n][m] = (dpsol(dp,m-1,n,puddles))%1000000007
+        return dp[n][m]
+    
+def solution(m, n, puddles):
+    answer = 0
+    dp = [[0]*m for i in range(n)]
+    dp[0][0] = 1
+    answer = dpsol(dp, m-1, n-1, puddles)
+    """for i in range(len(dp)):
+        print(dp[i])"""
+    return answer
