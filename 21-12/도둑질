@@ -1,0 +1,19 @@
+def solution(money):
+    answer = 0
+    dp = [0] * len(money)
+    dp[0] = money[0]
+    dp[1] = max(money[0], money[1])
+    for n in range(2, len(money)-1): #첫집을 무조건 턺
+        dp[n] = max(dp[n-2] + money[n], dp[n-1])
+    dp2 = [0] * len(money)
+    dp2[0] = 0
+    dp2[1] = money[1]
+    for n in range(2, len(money)):
+        dp2[n] = max(dp2[n-2] + money[n], dp2[n-1])
+    length = len(money)
+    answer = max(dp[length - 2], dp2[length - 1])
+    return answer
+
+    #첫집을 무조건 털거나 마지막집을 무조건 털거나 둘 중 하나임
+    #선형이 아닌 원형 구조이기 때문에 위와같은 조건이 필요
+    #다른 사람의 코드를 참고함 ㅠ
