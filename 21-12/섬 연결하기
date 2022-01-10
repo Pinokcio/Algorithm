@@ -1,0 +1,26 @@
+def findParent(parent, x):
+    if parent[x] != x:
+        parent[x] = findParent(parent, parent[x])
+    return parent[x]
+def unionParent(parent, a, b):
+    tmp_a = findParent(parent, a)
+    tmp_b = findParent(parent, b)
+    if tmp_b > tmp_a:
+        parent[tmp_b] = tmp_a
+    else:
+        parent[tmp_a] = tmp_b
+def solution(n, costs):
+    answer = 0
+    parent = [i for i in range(n)]
+    costs.sort(key = lambda x : [x[2], x[0], x[1]])
+    for c in costs:
+        if findParent(parent, c[0]) == findParent(parent, c[1]):
+            continue
+        unionParent(parent, c[0], c[1])
+        answer += c[2]
+    return answer
+    
+    #최소신장트리 만드는 문제
+    #크루스칼 알고리즘 사용
+    #findParent, unionParent 구현
+    #set으로 구현을 시도했지만 이 경우에 같은 set에 들어있는건지, 혹은 같은 set에 들어있더라도 연결이 된 것인지 구현이 복잡했음
