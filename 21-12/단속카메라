@@ -1,0 +1,25 @@
+def solution(routes):
+    answer = 0
+    routes.sort(key = lambda x : [x[1], x[0]])
+    e = 0
+    s = 0
+    start = routes[s][0]
+    flag = 0
+    while True:
+        end = routes[e][1]
+        while end >= start:
+            s += 1
+            if s >= len(routes):
+                flag = 1
+                break
+            start = routes[s][0]
+        print(end)
+        e = s
+        answer += 1
+        if e >= len(routes):
+            flag = 1
+        if flag:
+            break
+    return answer
+    #처음엔 [x[0], x[1]]로 정렬시켰는데 이러면 가장 처음에 진입한 차량이 가장 나중에 나갈경우 틀린 결과를 출력함
+    #[x[1], x[0]]로 정렬시켜야 가장 빨리 나가는 차량 기준으로 카메라 갯수를 샐 수 있음
