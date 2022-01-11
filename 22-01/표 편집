@@ -1,0 +1,44 @@
+from collections import deque
+def solution(n, k, cmd):
+    answer = ''
+    res = ['O']*(n+2)
+    linked_list = [[-1]*2 for i in range(n+2)]
+    for i in range(len(linked_list)):
+        linked_list[i][0] = i-1
+        linked_list[i][1] = i+1
+    linked_list[0][0] = -1
+    linked_list[-1][1] = -1
+    k += 1
+    q = deque()
+    for c in cmd:
+        tmp = c.split()
+        if tmp[0] == 'D': q
+            for _ in range(int(tmp[1])):
+                k = linked_list[k][1]
+        if tmp[0] == 'U':
+            for _ in range(int(tmp[1])):
+                k = linked_list[k][0]
+        if tmp[0] == 'C':
+            q.append(k)
+            if linked_list[linked_list[k][1]][1] == -1:
+                linked_list[linked_list[k][0]][1] = linked_list[k][1]
+                k = linked_list[k][0]
+            elif linked_list[linked_list[k][0]][0] == -1:
+                linked_list[linked_list[k][1]][0] = linked_list[k][0]
+                k = linked_list[k][1]
+            else:
+                linked_list[linked_list[k][0]][1] = linked_list[k][1]
+                linked_list[linked_list[k][1]][0] = linked_list[k][0]
+                k = linked_list[k][1]
+        if tmp[0] == 'Z':
+            idx = q.pop()
+            linked_list[linked_list[idx][0]][1] = idx
+            linked_list[linked_list[idx][1]][0] = idx
+        #print(linked_list, k)
+    for i in q:
+        res[i] = 'X'
+    answer = "".join(res)[1:-1]
+    return answer
+    
+    #이중포인터를 통해 해결하는 문제였음
+    #왜인지는 잘모르겠지만 앞 뒤 head, tail용 더미노드를 두지 않으면 solve가 되지 않았다..
