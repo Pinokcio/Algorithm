@@ -1,0 +1,18 @@
+def dfs(n, computers, i, memo):
+    if memo[i] == 1:
+        return
+    memo[i] = 1
+    for c in range(n):
+        if computers[i][c] == 1:
+            dfs(n, computers, c, memo)
+    return
+
+def solution(n, computers):
+    answer = 0
+    memo = [0] * n
+    cnt = 0
+    for i in range(n):
+        if memo[i] == 0:
+            dfs(n, computers, i, memo)
+            cnt += 1
+    return cnt
