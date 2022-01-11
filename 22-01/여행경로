@@ -1,0 +1,27 @@
+from collections import deque
+ans = []
+def dfs(q_ticket, cur, cnt, e, answer):
+    global ans
+    if ans != []:
+        return
+    if cnt == e:
+        ans = answer[:]
+        return
+    
+    q_tmp = deque(list(q_ticket)[:])
+    for i in range(0, len(q_tmp)):
+        tmp = q_tmp.popleft()
+        if tmp[0] == cur:
+            answer_tmp = answer[:]
+            answer_tmp.append(tmp[1])
+            #print(answer_tmp, q_tmp, tmp)
+            dfs(q_tmp, tmp[1], cnt + 1, e, answer_tmp)
+        q_tmp.append(tmp)
+    return
+
+def solution(tickets):
+    tickets.sort(key = lambda x : [x[0], x[1]])
+    q_ticket = deque(tickets)
+    dfs(q_ticket, "ICN", 0, len(tickets), ["ICN"])
+    return ans
+    
