@@ -1,0 +1,33 @@
+import math
+def calFee(fees, time):
+    if time < fees[0]:
+        return fees[1]
+    else:
+        tmp = fees[1]
+        t = time - fees[0]
+        tmp += math.ceil(t / fees[2]) * fees[3]
+        return tmp
+    
+def solution(fees, records):
+    answer = []
+    dic = {} #입차시간
+    res = {} #누적시간
+    for r in records:
+        tmp = r.split()
+        if tmp[2] == "IN":
+            dic[tmp[1]] = int(tmp[0][:2]) * 60 + int(tmp[0][3:])
+            if tmp[1] not in res:
+                res[tmp[1]] = 0
+        elif tmp[2] == "OUT":
+            t = int(tmp[0][:2]) * 60 + int(tmp[0][3:])
+            res[tmp[1]] += t - dic[tmp[1]]
+            dic[tmp[1]] = -1
+    for d in dic:
+        if dic[d] == -1:
+            continue
+        t = int(23) * 60 + int(59)
+        res[d] += (t - dic[d])
+        dic[d] = 0
+    for r in sorted(res):
+        answer.append(calFee(fees, res[r]))
+    return answer
