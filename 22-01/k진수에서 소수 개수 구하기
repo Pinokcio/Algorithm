@@ -1,0 +1,33 @@
+from collections import deque
+import math
+def isPrime(n):
+    if n == 1:
+        return False
+    for i in range(2, int(math.sqrt(n)+1)):
+        if n % i == 0:
+            return False
+    else:
+        return True
+
+def solution(n, k):
+    answer = 0
+    q = deque()
+    res = []
+    entry = []
+    while True:
+        tmp = n % k
+        n = n // k
+        q.append(tmp)
+        if n < k:
+            q.append(n)
+            break
+    for i in range(len(q)):
+        res.append(str(q.pop()))
+    res = "".join(res)
+    entry = res.split('0')
+    for e in entry:
+        if e == "":
+            continue
+        if isPrime(int(e)):
+            answer += 1
+    return answer
