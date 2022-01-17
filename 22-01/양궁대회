@@ -1,0 +1,90 @@
+import math
+res = []
+minn = math.inf
+def dfs(n, k, cur, diff, info, memo):
+    global res
+    global minn
+    if cur == -1:
+        if sum(memo) != n:
+            return
+        if minn > diff:
+            minn = diff
+            res = []
+            res.append(memo)
+        elif minn == diff:
+            res.append(memo)
+        return
+    
+    tmp = 0
+    sc_tmp = 0
+    if info[10-cur] > 0:
+        tmp = info[10-cur]+1
+        sc_tmp = cur*2
+    else:
+        tmp = 1
+        sc_tmp = cur
+    tmp1 = memo[:]
+    tmp2 = memo[:]
+    tmp1.append(0)
+    dfs(n, k, cur-1, diff, info, tmp1)
+    if cur == 0:
+        tmp = k
+    if k-tmp >= 0 :
+        tmp2.append(tmp)
+        dfs(n, k-tmp, cur-1, diff - sc_tmp, info, tmp2)
+    
+def solution(n, info):
+    answer = []
+    diff = 0
+    global res
+    global minn
+    for e,i in enumerate(info):
+        if i>0:
+            diff += (10-e)
+    dfs(n, n, 10, diff, info, [])
+    if minn >= 0:
+        return [-1]
+    res.sort(key = lambda x : [x[10],x[9],x[8],x[7],x[6],x[5],x[4],x[3],x[2],x[1],x[0]], reverse = True)
+    answer = res[0]
+    return answer
+
+#물구나무서서 봐도 완전탐색 문제인데 괜히 dp로 풀고, 반복조합 생각하고.. 완전탐색해도 2048번만 돌면 풀리는걸 왜 어렵게 생각했을까...
+
+
+
+"""def solution(n, info):
+    answer = []
+    sc = [[0,0] for i in range(11)]
+    diff = 0
+    for i in range(len(info)):
+        if info[i]>0:
+            diff += (10-i)
+    dp = [[diff]*(n+1) for i in range(11)]
+    for i in range(10, -1, -1):
+        if info[10-i] > 0:
+            sc[i][0] = i*2
+            sc[i][1] = info[10-i]+1
+        else:
+            sc[i][0] = i
+            sc[i][1] = 1
+    
+    for i in range(1, 11):
+        for j in range(0, n+1):
+            dp[i][j] = dp[i-1][j]
+            if j+sc[i][1] <= n:
+                dp[i][j] = min([dp[i-1][j+sc[i][1]] - sc[i][0], dp[i][j]])
+        
+    if dp[10][0] >= 0:
+        return [-1]
+    i = 10
+    k = 0
+    while i > 0:
+        if dp[i][k] == dp[i-1][k]:
+            answer.append(0)
+        else:
+            answer.append(sc[i][1])
+            k += sc[i][1]
+        i -= 1
+    answer.append(n-sum(answer))
+    return answer"""
+    #dp로 풀다가 실패함.. 85점
