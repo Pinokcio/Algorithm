@@ -1,0 +1,36 @@
+from collections import deque
+maxn = 0
+def dfs(cur, mapp, memo, info, sheep, wolf, st):
+    sheep += info[cur]^1
+    wolf += info[cur]
+    if wolf >= sheep:
+        return
+    global maxn
+    memo[cur] = 1
+    tmp = memo[:]
+    st_t = st.copy()
+    st_t.remove(cur)
+    for i in range(len(mapp[cur])):
+        if mapp[cur][i] == 1:
+            st_t.add(i)
+    maxn = max(maxn, sheep)
+    for i in st_t:
+        dfs(i, mapp, tmp, info, sheep, wolf, st_t)
+    
+def solution(info, edges):
+    answer = 0
+    mapp = [[0]*len(info) for i in range(len(info))]
+    for e in edges:
+        mapp[e[0]][e[1]] = 1
+    sheep = 0
+    wolf = 0
+    cur = 0
+    memo = [0]*len(info)
+    st = set()
+    st.add(0)
+    global maxn
+    dfs(cur, mapp, memo, info, sheep, wolf, st)
+    answer = maxn
+    return answer
+    
+    #처음에 bfs로 푸는데 잘 안풀려서 다른 곳에서 힌트를 얻고 dfs로 푼 문제
