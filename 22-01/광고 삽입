@@ -1,0 +1,43 @@
+def strtonum(s):
+    n1 = s[0:2]
+    n2 = s[3:5]
+    n3 = s[6:8]
+    return int(n1)*3600+int(n2)*60+int(n3)
+
+def solution(play_time, adv_time, logs):
+    answer = ''
+    avd = strtonum(adv_time)
+    play = strtonum(play_time)
+    maxn = 0
+    ans = 0
+    accumsum = [0] * 360001 #누적합
+    anssum = [0] * 360001 #광고시간동안 누적합의 합
+    
+    for l in logs:
+        tmp1 = strtonum(l[0:8]) #광고시작
+        tmp2 = strtonum(l[9:17]) #광고끝
+        accumsum[tmp1] += 1
+        accumsum[tmp2] -= 1 #누적합 선행작업
+    
+    for i in range(1, 360000): #누적합 계산
+        accumsum[i] = accumsum[i] + accumsum[i-1]
+    
+    anssum[0] = sum(accumsum[0:avd]) #광고기간동안 누적합의 합 0~avd
+    for i in range(1, 360000-avd):
+        anssum[i] = anssum[i-1] - accumsum[i-1] + accumsum[i+avd-1]
+    
+    for i in range(0, 360000-avd):
+        if maxn < anssum[i]:
+            ans = i
+            maxn = anssum[i]
+    
+    n1 = ans//3600
+    n2 = ans%3600//60
+    n3 = ans%3600%60
+    li = [f'{n1:02d}',":",f'{n2:02d}',":",f'{n3:02d}']
+    answer = "".join(li)
+    return answer
+    
+    #모든 경우의 수를 다 계산할 경우 범위가 초과돼 효율성 문제 발생
+    #누적합 방법을 통해 0~100시간. 총 360000초의 경우에 수에 대해 O(N)으로 계산하여 해결.
+    #이 때 시간은 0~n초 경우에서 0초 이상 n초 미만으로 계산한다. 
