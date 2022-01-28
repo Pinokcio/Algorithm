@@ -1,0 +1,20 @@
+import math
+def solution(n, s, a, b, fares):
+    answer = math.inf
+    dp = [[math.inf]*(n+1) for i in range(n+1)]
+    for i in range(1, n+1):
+        dp[i][i] = 0
+        
+    for f in fares:
+        dp[f[0]][f[1]] = f[2]
+        dp[f[1]][f[0]] = f[2]
+    for k in range(1, n+1):
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j])
+    for i in range(1, n+1):
+        answer = min(answer, dp[s][i]+dp[i][a]+dp[i][b])
+    return answer
+    
+    #플로이드 와샬 알고리즘 이용하여 해결, 모든 지점에서 모든 지점으로의 최단 거리 
+    #O(N^3) 시간복잡도
