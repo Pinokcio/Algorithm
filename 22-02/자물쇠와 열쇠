@@ -1,0 +1,41 @@
+def turn(li, n): #반시계 방향으로 회전
+    tmp = [[0]*n for i in range(n)]
+    for i in range(n):
+        for j in range(n):
+            tmp[n-j-1][i] = li[i][j]
+    return tmp
+
+def solve(key, lock):
+    n = len(key)
+    m = len(lock)
+    tmp = [[1]*(m+(n-1)*2) for i in range((m+(n-1)*2))]
+    for i in range(n-1, n-1+m):
+        for j in range(n-1, n-1+m):
+            tmp[i][j] = lock[i-(n-1)][j-(n-1)]
+    for i in range(0, m+(n-1)*2+1-n):
+        for j in range(0, m+(n-1)*2+1-n):
+            for k in range(n):
+                for h in range(n):
+                    tmp[i+k][j+h] = tmp[i+k][j+h] ^ key[k][h]
+            flag = 1
+            
+            for k in range(n-1, n-1+m):
+                for h in range(n-1, n-1+m):
+                    if tmp[k][h] == 0:
+                        flag = 0
+            if flag:
+                return True
+            for k in range(n):
+                for h in range(n):
+                    tmp[i+k][j+h] = tmp[i+k][j+h] ^ key[k][h]
+    return False
+
+def solution(key, lock):
+    answer = True
+    n = len(key)
+    for i in range(4):
+        answer = solve(key, lock)
+        key = turn(key, n)
+        if answer:
+            return True
+    return False
