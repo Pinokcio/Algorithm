@@ -1,0 +1,21 @@
+import sys
+sys.setrecursionlimit(10 ** 6)
+
+def fib(dp, n):
+    if dp[n] != -1:
+        return dp[n]
+    else:
+        dp[n] = fib(dp, n-1) % 1000000007 + fib(dp, n-2) % 1000000007
+        return dp[n]
+def solution(n):
+    dp = [-1] * 60001
+    dp[0] = 1
+    dp[1] = 1
+    dp[2] = 2
+    answer = fib(dp, n) % 1000000007
+    return answer
+
+#처음엔 factorial로 풀었으나 시간초과로 인해 피보나치로 변경.
+#n크기의 블록을 1 또는 2로 표현하는(피보나치의 계단문제와 유사한)문제이다.
+#f(n), 즉 n개의 블록을 채우는 방법으로는 n-1개의 블록을 어떤 방식으로든지 채우고 마지막에 1짜리 블록을 놓는 방법과 n-2개의 블록을 어떤 방식으로든지 채우고 마지막에 2짜리 블록을 놓는 
+#\\두가지 방법이 있다. 따라서 f(n) = f(n-1) + f(n-2) 라는 점화식을 만들 수 있고 이를 dp로 풀어 해결할 수 있다.
