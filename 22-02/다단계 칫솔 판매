@@ -1,0 +1,26 @@
+import math
+def solution(enroll, referral, seller, amount):
+    answer = []
+    dic_ref = {}
+    dic_sell = {}
+    length = len(enroll)
+    for i, e in enumerate(enroll):
+        dic_ref[e] = referral[i]
+        dic_sell[e] = []
+    for i, s in enumerate(seller):
+        dic_sell[s].append(amount[i]*100)
+        
+    for e in range(length-1, -1, -1):
+        ref = dic_ref[enroll[e]]
+        for i,s in enumerate(dic_sell[enroll[e]]):
+            if ref != '-':
+                tmp = math.floor(0.1 * s)
+                if tmp != 0:
+                    dic_sell[ref].append(math.floor(0.1 * s))
+            dic_sell[enroll[e]][i] = math.ceil(0.9 * s)
+    for e in enroll:
+        answer.append(sum(dic_sell[e]))
+    return answer
+    
+    #트리구조가 최악일 경우 돈이 0원임에도 계속 append 될 가능성이 있음
+    #이 때 효율성 문제가 발생하므로 0원일때는 append하지 않도록 코드를 수정
