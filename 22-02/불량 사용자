@@ -1,0 +1,29 @@
+import re
+st = set()
+def dfs(res, n, li):
+    global st
+    if n == len(res):
+        st.add(tuple(sorted(li)))
+        return
+    for r in res[n]:
+        tmp = li[:]
+        if r not in li:
+            tmp.append(r)
+            dfs(res, n+1, tmp)
+        
+def solution(user_id, banned_id):
+    answer = 0
+    res = [[] for i in range(len(banned_id))]
+    for e,i in enumerate(banned_id):
+        p = re.compile(i.replace("*", "[a-zA-Z0-9]"))
+        for j in user_id:
+            tmp = p.match(j)
+            length = 0
+            if tmp != None:
+                length = tmp.span()[1] - tmp.span()[0]
+            if len(j) == length:
+                res[e].append(j)
+    global st
+    dfs(res, 0, [])
+    answer = len(st)
+    return answer
