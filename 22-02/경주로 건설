@@ -1,0 +1,25 @@
+import math
+from collections import deque
+def solution(board):
+    n = len(board)
+    li = [[[math.inf, math.inf] for j in range(n)] for i in range(n)]
+    dx = [0,1,0,-1]
+    dy = [1,0,-1,0]
+    q = deque()
+    q.append([0, 0, 0, -1])
+    while q:
+        now_y, now_x, res, dirc = q.popleft()
+        if li[now_y][now_x][dirc] <= res:
+            continue
+        li[now_y][now_x][dirc] = res
+        for i in range(4):
+            next_y = now_y + dy[i]
+            next_x = now_x + dx[i]
+            if next_y >= n or next_y < 0 or next_x >= n or next_x < 0:
+                continue
+            if board[next_y][next_x] == 0:
+                next_dirc = (0 if dy[i] else 1)
+                cost = res + (100 if dirc == next_dirc or dirc == -1 else 600)
+                q.append([next_y, next_x, cost, next_dirc])
+
+    return min(li[n-1][n-1][0], li[n-1][n-1][1])
