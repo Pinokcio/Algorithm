@@ -1,0 +1,33 @@
+def solution(s):
+    answer1 = 0
+    answer2 = 0
+    n = len(s)
+    for i in range(n):
+        a = i-1
+        b = i+1
+        cnt = 0
+        while a >= 0 and b <= n-1:
+            if s[a] == s[b]:
+                cnt += 1
+                a -= 1
+                b += 1
+            else:
+                break
+        answer1 = max(answer1, cnt)
+    for i in range(n):
+        a = i-1
+        b = i
+        cnt = 0
+        while a >= 0 and b <= n-1:
+            if s[a] == s[b]:
+                cnt += 1
+                a -= 1
+                b += 1
+            else:
+                break
+        answer2 = max(answer2, cnt)
+    if answer1 >= answer2:
+        answer = answer1 * 2 + 1
+    else:
+        answer = answer2 * 2
+    return answer
