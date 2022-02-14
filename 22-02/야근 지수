@@ -1,0 +1,16 @@
+import heapq as hq
+def solution(n, works):
+    answer = 0
+    li = []
+    if n >= sum(works):
+        return 0
+    hq.heapify(li)
+    for i in works:
+        hq.heappush(li, -i)
+    for i in range(n):
+        hq.heappush(li, -(-hq.heappop(li) - 1))
+    for i in range(len(li)):
+        answer += pow(-hq.heappop(li),2)
+    return answer
+    
+    #heapq는 min heap만 지원하므로 push, pop 할 때 (-) 부호를 붙여주어 max heap으로 사용함
