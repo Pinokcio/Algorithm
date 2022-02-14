@@ -1,0 +1,10 @@
+def solution(n, s):
+    answer = []
+    li = [s//n] * n
+    for i in range(s%n):
+        li[i%n] += 1
+    for i in range(len(li)):
+        if li[i] == 0:
+            return [-1]
+    answer = sorted(li)
+    return answer
