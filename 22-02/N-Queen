@@ -1,0 +1,24 @@
+cnt = 0
+def possible(q, n):
+    for i in range(n):
+        if q[i] == q[n] or abs(q[i]-q[n]) == abs(i-n):
+            return False
+    return True
+
+def solve(q, cur, n):
+    if cur == n:
+        global cnt
+        cnt += 1
+        return
+    
+    for i in range(n):
+        q[cur] = i
+        if possible(q, cur):
+            solve(q, cur+1, n)
+            
+def solution(n):
+    answer = 0
+    q = [0]*n
+    solve(q, 0, n)
+    global cnt
+    return cnt
