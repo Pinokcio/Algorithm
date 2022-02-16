@@ -1,0 +1,21 @@
+from collections import deque
+def solution(A, B):
+    answer = 0
+    li = []
+    for i in A:
+        li.append((i, 1))
+    for i in B:
+        li.append((i, 2))
+    li.sort(key = lambda x : [-x[0], x[1]])
+    q = deque()
+    for i in li:
+        if i[1] == 2:
+            q.append(i)
+        else:
+            if q:
+                tmp = q.popleft()
+                if tmp[0] == i[0]:
+                    pass
+                else:
+                    answer += 1
+    return answer
