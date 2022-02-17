@@ -1,0 +1,19 @@
+def solution(n, stations, w):
+    answer = 0
+    arr_0 = 1
+    li = []
+    for s in stations:
+        li.append([arr_0, s-w-1])
+        if s+w+1 >= n:
+            arr_0 = n
+        else:
+            arr_0 = s+w+1
+    if stations[-1]+w < n:
+        li.append([arr_0, n])
+    print(li)
+    for l in li:
+        temp = (l[1] - l[0] + 1)//(2*w+1)
+        if (l[1] - l[0] + 1)%(2*w+1) != 0:
+            temp += 1
+        answer += temp
+    return answer
