@@ -1,0 +1,51 @@
+def solution(word, pages):
+    answer = 0
+    dic = {}
+    name_li = []
+    for p in pages:
+        index = -1
+        index_link = -1
+        cnt = 0
+        index_name = -1
+        index_name = str.lower(p).find('<meta property=', index_name+1)
+        index_name = str.lower(p).find('content=', index_name+1)
+        bef = str.lower(p).find('\"', index_name+1)
+        aft = str.lower(p).find('\"', bef+1)
+        name = p[bef:aft+1]
+        while True:
+            index = str.lower(p).find(str.lower(word), index+1)
+            if index == -1:
+                break
+            if 'a'<=p[index-1]<='z' or 'A'<=p[index-1]<='Z' or 'a'<=p[index+len(word)]<='z' or 'A'<=p[index+len(word)]<='Z':
+                continue
+            cnt += 1
+        cnt_link = 0
+        tmp = []
+        while True:
+            index_link = str.lower(p).find('a href=', index_link+1)
+            if index_link == -1:
+                break
+            index_comma = -1
+            index_comma = str.lower(p).find('\"', index_link)
+            bef = index_comma
+            aft = str.lower(p).find('\"', index_comma+1)
+            tmp.append(p[bef:aft+1])
+            cnt_link += 1
+        for t in tmp:
+            if t in dic:
+                dic[t] += cnt / cnt_link
+            else:
+                dic[t] = cnt / cnt_link
+        if name in dic:
+            dic[name] += cnt
+        else:
+            dic[name] = cnt
+        name_li.append(name)
+    maxn = -1
+    max_name = ""
+    for e,n in enumerate(name_li):
+        if maxn < dic[n]:
+            maxn = dic[n]
+            max_name = e
+    answer = max_name
+    return answer
