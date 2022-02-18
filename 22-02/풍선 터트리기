@@ -1,0 +1,25 @@
+import math
+from collections import deque
+def solution(a):
+    answer = 0
+    st = set(a)
+    q = deque(sorted(a))
+    left_min = math.inf
+    right_min = q[0]
+    cnt = 0
+    for i in a:
+        st.remove(i)
+        if right_min not in st:
+            while q and q[0] not in st:
+                q.popleft()
+            if q:
+                right_min = q[0]
+            else:
+                right_min = math.inf
+        #print(left_min, i, right_min, q, st)
+        if i<left_min or i<right_min:
+            cnt += 1
+        if left_min > i:
+            left_min = i
+    answer = cnt
+    return answer
