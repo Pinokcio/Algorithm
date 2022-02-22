@@ -1,0 +1,35 @@
+from itertools import permutations
+import math
+def solution(n, weak, dist):
+    length = len(weak)
+    weak_n = weak + [weak[i] + n for i in range(length)]
+    minn = math.inf
+    for i in range(length):
+        wall_dist = [weak_n[i+j] for j in range(length)]
+        candidate = permutations(dist, len(dist))
+        for order in candidate:
+            friend_idx, wall_idx = 0, 0
+            wall_cur = 0
+            while True:
+                if wall_dist[wall_cur] <= wall_dist[wall_idx] + order[friend_idx]:
+                    wall_cur += 1
+                else:
+                    friend_idx += 1
+                    wall_idx = wall_cur
+                if friend_idx >= len(order):
+                    break
+                if wall_cur >= len(wall_dist):
+                    minn = min(minn, friend_idx + 1)
+                    break
+    if minn == math.inf:
+        minn = -1
+    return minn
+    
+    #풀이 방법은 찾았지만 구현방법이 떠오르지 않아 다른사람 풀이를 참고함
+    #weak_n -> weak의 길이를 두배 해줌으로써 시계/반시계 원순환 문제를 해결
+    #wall_cur : 현재 검사중인 벽의 위치, friend_idx : 현재 벽에 배치하려는 사람, wall_idx : 현재 벽에 배치하려는 사람이 위치한 벽의 위치
+    #만약 현재 가리키고 있는 사람이 현재 검사하려는 벽의 위치(wall_cur)까지 닿으면 wall_cur을 1증가(다음 벽까지 닿는지도 검사)시키고, 닿지 않으면 다음 사람을 가리킴(friend_idx += 1)
+    #또한 새로운 사람을 가리킬 때 그 사람의 위치는 이전 사람이 닿지 못했던 벽의 위치(wall_cur)이 된다.
+    #사람을 전부 다 고용했거나(friend_idx >= len(order)), 벽을 다 검사했으면 반복문 탈출
+    #벽을 다 검사한 경우에 대해서는 friend_idx를 검사해서 몇명을 고용했는지를 확인한다. 이 때 최소로 고용한 경우가 정답이 된다.
+    #만약 어떤 경우에도 벽을 다 검사하지 못했을 경우에는 minn == math.inf로, 초기값 그대로일테고, 이 땐 -1을 리턴한다.
