@@ -1,0 +1,24 @@
+def solution(sticker):
+    answer = 0
+    if len(sticker) == 1:
+        return sticker[0]
+    dp1 = sticker[:]
+    dp1[-1] = 0
+    dp1[1] = 0
+    dp2 = sticker[:]
+    dp2[0] = 0
+    for i in range(1, len(sticker)):
+        if i>=2:
+            dp1[i] = max(dp1[i-2] + dp1[i], dp1[i-1])
+            dp2[i] = max(dp2[i-2] + dp2[i], dp2[i-1])
+        else:
+            dp1[i] = max(dp1[i],dp1[i-1])
+            dp2[i] = max(dp2[i],dp2[i-1])
+    answer = max(max(dp1), max(dp2))
+    return answer
+    
+    #원형구조 문제다.
+    #이런 구조를 풀때는 시작지점을 하나 기준으로 삼고 푸는 것이 좋다.
+    #보통 첫 인덱스가 마지막 인덱스와 연관되어 영향을 줘서 보통과 구하는 방법이 달라지는 방식인데, 이를 해결하기 위해 두개의 경우에 대해 값을 구한다.
+    #하나는 첫번째 인덱스를 포함하는 결과, 다른 하나는 첫번째 인덱스를 포함하지 않는(마지막 인덱스를 포함하는) 결과
+    #그 후 두 결과를 비교해서 알맞은 정답을 구한다.
