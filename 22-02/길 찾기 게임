@@ -1,0 +1,51 @@
+import sys
+sys.setrecursionlimit(10**6)
+pre_res = []
+post_res = []
+def preorder(li, n):
+    if n == -1:
+        return
+    global pre_res
+    pre_res.append(n+1)
+    preorder(li, li[n][0])
+    preorder(li, li[n][1])
+    
+def postorder(li, n):
+    if n == -1:
+        return
+    postorder(li, li[n][0])
+    postorder(li, li[n][1])
+    global post_res
+    post_res.append(n+1)
+    
+def solution(nodeinfo):
+    answer = []
+    for i in range(len(nodeinfo)):
+        nodeinfo[i].append(i)
+    li = [[-1, -1, nodeinfo[i][0]] for i in range(len(nodeinfo))]
+    nodeinfo.sort(key = lambda x : [-x[1], x[0]])
+    head = nodeinfo[0][2]
+    for i in nodeinfo:
+        cur = head
+        while True:
+            if li[i[2]][2] < li[cur][2]:
+                if li[cur][0] == -1:
+                    li[cur][0] = i[2]
+                    break
+                else:
+                    cur = li[cur][0]
+            elif li[i[2]][2] > li[cur][2]:
+                if li[cur][1] == -1:
+                    li[cur][1] = i[2]
+                    break
+                else:
+                    cur = li[cur][1]
+            else:
+                break
+    preorder(li, head)
+    global pre_res
+    postorder(li, head)
+    global post_res
+    answer.append(pre_res)
+    answer.append(post_res)
+    return answer
