@@ -1,0 +1,30 @@
+import sys
+sys.setrecursionlimit(10**6)
+ans = 0
+res = 0
+def dfs(memo, li, n, a):
+    global ans
+    global res
+    memo[n] = 1
+    ans += a[n]
+    for i in li[n]:
+        if memo[i] != 1:
+            bef = ans
+            dfs(memo, li, i, a)
+            aft = ans
+            res += abs(aft - bef)
+def solution(a, edges):
+    if sum(a) != 0:
+        return -1
+    
+    li = [[] for i in range(len(a))]
+    for e in edges:
+        i = e[0]
+        j = e[1]
+        li[i].append(j)
+        li[j].append(i)
+    memo = [0] * len(a)
+    global ans
+    global res
+    dfs(memo, li, 0, a)
+    return abs(res)
