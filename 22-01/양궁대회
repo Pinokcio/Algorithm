@@ -1,4 +1,47 @@
+import sys
+sys.setrecursionlimit(10**6)
 import math
+minn = math.inf
+res = []
+def dfs(n, k, diff, info, memo):
+    global minn
+    global res
+    if k == 0 and n>0:
+        memo[10-k] += n
+    if diff < minn:
+        minn = diff
+        res = []
+        res.append(memo)
+    elif diff == minn:
+        res.append(memo)
+    tmp1 = memo[:]
+    tmp2 = memo[:]
+    if k-1 >= 0:
+        if n-(info[10-k]+1) >= 0:
+            tmp2[10-k] = info[10-k]+1
+            dfs(n-(info[10-k]+1), k-1, diff-(k*2 if info[10-k]>0 else k), info, tmp2) #n번째 점수에서 이기는 경우
+        dfs(n, k-1, diff, info, tmp1) #n번째 점수에서 지는 경우/ 남은화살수, 점수, 점수차, 상대점수, memo
+      
+def solution(n, info):
+    answer = 0
+    memo = [0] * 11
+    diff = 0
+    for i in range(10, -1, -1):
+        if info[10-i] > 0:
+            diff += i
+    dfs(n, 10, diff, info, memo)
+    global minn
+    global res
+    if minn >= 0:
+        return [-1]
+    res.sort(key = lambda x : [x[10],x[9],x[8],x[7],x[6],x[5],x[4],x[3],x[2],x[1],x[0]], reverse = True)
+    return res[0]
+
+
+
+
+
+"""import math
 res = []
 minn = math.inf
 def dfs(n, k, cur, diff, info, memo):
@@ -46,7 +89,59 @@ def solution(n, info):
         return [-1]
     res.sort(key = lambda x : [x[10],x[9],x[8],x[7],x[6],x[5],x[4],x[3],x[2],x[1],x[0]], reverse = True)
     answer = res[0]
-    return answer
+    return answer"""
+    
+    
+    
+"""import math
+res = []
+minn = math.inf
+def dfs(n, k, cur, diff, info, memo):
+    global res
+    global minn
+    if cur == -1:
+        if sum(memo) != n:
+            return
+        if minn > diff:
+            minn = diff
+            res = []
+            res.append(memo)
+        elif minn == diff:
+            res.append(memo)
+        return
+    
+    tmp = 0
+    sc_tmp = 0
+    if info[10-cur] > 0:
+        tmp = info[10-cur]+1
+        sc_tmp = cur*2
+    else:
+        tmp = 1
+        sc_tmp = cur
+    tmp1 = memo[:]
+    tmp2 = memo[:]
+    tmp1.append(0)
+    dfs(n, k, cur-1, diff, info, tmp1)
+    if cur == 0:
+        tmp = k
+    if k-tmp >= 0 :
+        tmp2.append(tmp)
+        dfs(n, k-tmp, cur-1, diff - sc_tmp, info, tmp2)
+    
+def solution(n, info):
+    answer = []
+    diff = 0
+    global res
+    global minn
+    for e,i in enumerate(info):
+        if i>0:
+            diff += (10-e)
+    dfs(n, n, 10, diff, info, [])
+    if minn >= 0:
+        return [-1]
+    res.sort(key = lambda x : [x[10],x[9],x[8],x[7],x[6],x[5],x[4],x[3],x[2],x[1],x[0]], reverse = True)
+    answer = res[0]
+    return answer"""
 
 #물구나무서서 봐도 완전탐색 문제인데 괜히 dp로 풀고, 반복조합 생각하고.. 완전탐색해도 2048번만 돌면 풀리는걸 왜 어렵게 생각했을까...
 
