@@ -1,0 +1,73 @@
+import sys
+import math
+from collections import deque
+from itertools import permutations
+sys.setrecursionlimit(10 ** 8)
+
+def ctrl(board, y, x, dy, dx, n):
+    ny = y
+    nx = x
+    while True:
+        ny += dy
+        nx += dx
+        if ny<=n-1 and nx<=n-1 and ny>=0 and nx>=0:
+            if board[ny][nx]!=0:
+                return ny, nx
+        else:    
+            return ny-dy, nx-dx
+
+def solution(board, r, c):
+    answer = math.inf
+    n = len(board)
+    card_cnt = 0
+    for i in range(n):
+        for j in range(n):
+            if board[i][j] != 0:
+                card_cnt += 1
+    card_cnt //= 2
+    card_list = [i for i in range(1, card_cnt+1)]
+    dx = [1, 0, -1, 0]
+    dy = [0, 1, 0, -1]
+    
+    for p in permutations(card_list,card_cnt):
+        q = deque()
+        y, x, cnt = r, c, 0
+        card = -1 #선택한 카드가 있을 경우 != -1, 없으면 -1
+        tmp = [k[:] for k in board]
+        for j in p:
+            q = deque()
+            q.append((y, x, cnt))
+            card = -1
+            while q:
+                y, x, cnt = q.popleft()
+                if y<0 or x<0 or y>=n or x>=n:
+                    continue
+                if tmp[y][x] == j:
+                    if card == -1:
+                        card = j
+                        tmp[y][x] = 0
+                        cnt += 1
+                        q = deque()
+                    elif card == j:
+                        card = -1
+                        tmp[y][x] = 0
+                        cnt += 1
+                        q = deque()
+                        q.append((y, x, cnt))
+                        break
+                for i in range(4):
+                    ny = y + dy[i]
+                    nx = x + dx[i]
+                    q.append((ny, nx, cnt+1))
+                    ny, nx = ctrl(tmp, y, x, dy[i], dx[i], n)
+                    if y==ny and x==nx:
+                        pass
+                    else:
+                        q.append((ny, nx, cnt+1))
+        answer = min(answer, cnt)
+                
+    return answer
+    
+    #진짜 화난다...
+    #파이썬 이중리스트 얕은 복사에 유의할 것
+    #ex) tmp = [item[:] for item in board]
