@@ -1,0 +1,28 @@
+from itertools import permutations
+def solution(a):
+    answer = 0
+    dic = {}
+    for i in a:
+        if i in dic:
+            dic[i] += 1
+        else:
+            dic[i] = 1
+    li = list(dic)
+    li.sort(key = lambda x : -dic[x])
+    for i in li:
+        flag = -1
+        partner = -1
+        cnt = 0
+        for j in a:
+            if j == i:
+                flag = 1
+            else:
+                partner = j
+            if flag == 1 and partner != -1:
+                cnt += 1
+                flag = -1
+                partner = -1
+        if dic[i] <= answer:
+            break
+        answer = max(answer, cnt)
+    return answer*2
