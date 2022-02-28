@@ -1,0 +1,61 @@
+from collections import deque
+def trace(r1, r2, union):
+    rec = []
+    start = r1[0]
+    end = r1[-1]
+    i = 0
+    tmp = r1[:]
+    flag = 0
+    while True:
+        cur = tmp[i]
+        rec.append(cur)
+        if cur == end:
+            break
+        if cur in union:
+            if flag == 0:
+                flag = 1
+                tmp = r2[:]
+                i = tmp.index(cur)
+            else:
+                flag = 0
+                tmp = r1[:]
+                i = tmp.index(cur)
+        i += 1
+        if len(tmp) == i:
+            i = 0
+    return rec
+
+def solution(rectangle, characterX, characterY, itemX, itemY):
+    answer = 0
+    rec = []
+    
+    for r in rectangle:
+        tmp = []
+        for i in range(r[0], r[2]+1):
+            tmp.append((i, r[1]))
+        for i in range(r[1]+1, r[3]):
+            tmp.append((r[2] ,i))
+        for i in range(r[2], r[0]-1, -1):
+            tmp.append((i, r[3]))
+        for i in range(r[3]-1, r[1], -1):
+            tmp.append((r[0], i))
+        rec.append(tmp)
+    rec.sort()
+    q = deque(rec)
+    r_t = q.popleft()
+    while q:
+        tmp = q.popleft()
+        u_point = set(r_t) & set(tmp)
+        if u_point == set():
+            q.append(tmp)
+        else:
+            r_t = trace(r_t, tmp, u_point)
+            
+    temp = abs(r_t.index((characterX, characterY)) - r_t.index((itemX, itemY)))
+    answer = min(len(r_t)-temp, temp)
+    return answer
+   
+  #bfs나 dfs 같은 완전탐색 알고리즘이 아닌 단순 트레이싱으로 구현함
+  #교점을 기준으로 트레이싱하는 도형이 바뀜
+  #만약 시작점이 합쳐진 도형의 내부라면 도형의 외곽을 훑을 수 없게됨.
+  #이를 해결하고자 시작점의 위치를 기준으로 sorting하였고, 만약 교점이 없으면 deque의 맨 끝으로 보내 나중에 교점이 생길 때 계산할 수 있도록 
