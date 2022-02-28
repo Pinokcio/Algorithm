@@ -27,4 +27,5 @@ def solution(s):
         tmp += temp
         answer.append("".join(list(tmp)))
     return answer
-#s에서 110이 있으면 뽑고 a<110<b를 만족하는 위치에 들어간다.
+#s에서 110의 갯수를 구하고 110을 전부 뺀 나머지 원소를 구한다.
+#나머지 원소에서 뒤에서부터 접근해서 가장 먼저 만나는 0 뒤에 110을 구한 갯수만큼 붙인다.
