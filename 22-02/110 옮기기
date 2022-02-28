@@ -1,0 +1,30 @@
+from collections import deque
+def solution(s):
+    answer = []
+    
+    for i in s:
+        cnt = 0
+        tmp = deque()
+        q = deque(i)
+        while q and len(q)>=3 :
+            if q[0] == '1' and q[1] == '1' and q[2] == '0':
+                for _ in range(3):
+                    q.popleft()
+                cnt += 1
+                for _ in range(2):
+                    if tmp:
+                        q.appendleft(tmp.pop())
+            else:
+                tmp.append(q.popleft())
+        tmp += q
+        temp = deque(['1','1','0'] * cnt)
+        while tmp:
+            if tmp.pop() == '1':
+                temp.append('1')
+            else:
+                tmp.append('0')
+                break
+        tmp += temp
+        answer.append("".join(list(tmp)))
+    return answer
+#s에서 110이 있으면 뽑고 a<110<b를 만족하는 위치에 들어간다.
