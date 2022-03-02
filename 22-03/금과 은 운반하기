@@ -1,0 +1,27 @@
+def solution(a, b, g, s, w, t):
+    answer = (10**9) * (10**5) * 4
+    tu = []
+    for i in range(len(g)):
+        tu.append([g[i],s[i],w[i],t[i]])
+    s = 0
+    e = (10**9) * (10**5) * 4
+    while s<=e:
+        mid = (s+e)//2
+        sum_g, sum_s, total = 0, 0, 0
+        for t in tu:
+            cnt = mid // (t[3]*2)
+            if mid % (t[3]*2) >= t[3]:
+                cnt += 1
+            delivery = cnt * t[2]
+            sum_g += t[0] if delivery > t[0] else delivery
+            sum_s += t[1] if delivery > t[1] else delivery
+            total += (t[0] + t[1]) if delivery > (t[0] + t[1]) else delivery 
+        if sum_g >= a and sum_s >= b and total >= a+b:
+            e = mid - 1
+            answer = min(answer, mid)
+        else: #시간이 모자란 경우엔 시간을 늘림
+            s = mid + 1
+    return answer
+    
+#시간을 target으로 설정하고, 각 시간동안 운반 가능한 금과 은을 토대로 조건을 만들어, 이분탐색으로 시간을 찾는 문제
+#이분탐색에 아직 부족함을 느낌. 보완 필요
