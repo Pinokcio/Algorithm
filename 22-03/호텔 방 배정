@@ -1,0 +1,22 @@
+def solution(k, room_number):
+    answer = []
+    dic = {}
+    for num in room_number:
+        if num not in dic: #num번방이 비어있으면 해당 방에 들어가고 dic[num] 값을 다음 방으로 지정해줌
+            dic[num] = num+1
+            answer.append(num)
+        else: #num번방이 비어있지 않으면 해당 방의 dic 값을 가져옴. 이 과정을 dic에 값이 없을 때 까지 반복
+            tmp = dic[num]
+            while tmp in dic:
+                temp = dic[tmp]
+                if temp in dic:
+                    dic[tmp] = dic[temp]
+                tmp = temp
+            dic[tmp] = tmp + 1
+            answer.append(tmp)
+    return answer
+    
+#처음엔 이분탐색으로 시도했으나 조건이 적절치않아서 그런지 계속 오답 발생 -> findParent로 변경
+#findParent를 이용할 시 탐색과정에서 최악에는 O(N^2)의 시간복잡도를 가져 효율성문제 발생
+#dictionary를 사용해 메모리 접근을 빠르게 가져가면서, findParent 시 연속된 입력값으로 인해 발생하는 최악의 경우에 대해 parent에 접근할 때마다 
+#parent의 parent가 존재할 경우, parent를 parent의 parent 값으로 변경해주는 과정을 넣어서 반복할때마다 최악의 경우에 비해 최대 절반의 접근만 하는 효과를 볼 수 있도록 함
