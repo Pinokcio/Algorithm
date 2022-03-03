@@ -1,0 +1,29 @@
+from collections import deque
+def solution(distance, rocks, n):
+    rocks = [0] + rocks + [distance]
+    rocks.sort()
+    s = 0
+    e = distance
+    while s<=e:
+        count = 0
+        k = 0
+        mid = (s+e)//2
+        for i in range(len(rocks)):
+            if rocks[i] - k >= mid:
+                k = rocks[i]
+            else:
+                if i == 0 or i == len(rocks)-1:
+                    continue
+                else:
+                    count += 1
+        #print(rocks, count, mid)
+        if count > n:
+            e = mid - 1
+        else:
+            s = mid + 1
+    return e
+#거리의 최솟값(answer)이 mid라면 그보다 작은 길이의 바위를 다 지웠을 때 지운 갯수가 n이 돼야한다.
+#만약 그보다 작은 길이의 바위를 다 지웠을 때 지운 갯수가 n보다 크면 mid는 answer보다 크므로 줄여야하고
+#n보다 작다면 mid는 늘려야한다.
+#조건을 만족하는 mid(answer)가 여러개가 될 수 있는데 -> mid를 4로 설정하고 지운 갯수도 n개고 mid를 5로 설정하고 지운 갯수도 n개 일 수 있다.
+#이 때는 그 중 최댓값(n개를 지웠을 때 거리의 최소값들 중 최대)이 정답이다.
