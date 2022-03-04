@@ -1,0 +1,33 @@
+from collections import deque
+def solution(food_times, k):
+    answer = 0
+    if sum(food_times) <= k:
+        return -1
+    li = []
+    for e, f in enumerate(food_times):
+        li.append([f, e+1])
+    li.sort(key = lambda x : [x[0], x[1]])
+    q = deque(li)
+    befminn = 0
+    lenq = len(q)
+    #print(k, q)
+    while True:
+        minn = q[0][0]
+        if k >= (minn-befminn)*lenq:
+            k -= (minn-befminn)*lenq
+        else:
+            break
+        cnt = 0
+        while q[0][0] == minn:
+            q.popleft()
+            lenq -= 1
+        befminn = minn
+        #print(k, q)
+    res = sorted(list(q), key = lambda x : [x[1], x[0]])
+    #print(res, k%lenq)
+    answer = res[k%lenq][1]
+    return answer
+"""1. q[0] (=최솟값) * lenq 를 k에서 뺀다. 그 후 최솟값과 같은 원소를 가진 인덱스를 뺀다.
+2. 뺀 인덱스만큼 lenq에서 뺀다. 그 후 q[0]은 다시 minn이 되고 1번 반복
+3. 위 과정을 k <= 0이 되기 전까지 반복
+4. 남은 q에 있는 것들은 index 기준으로 정렬한 리스트에서 k%lenq번째 index가 정답"""
