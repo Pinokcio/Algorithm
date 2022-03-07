@@ -1,0 +1,20 @@
+class Solution(object):
+    def rev(self, num):
+        return int("".join(str(num)[::-1]))
+    def countNicePairs(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        cnt = 0
+        dic = {}
+        for i in nums:
+            tmp = self.rev(i)
+            if i - tmp in dic:
+                dic[i-tmp] += 1
+            else:
+                dic[i-tmp] = 1
+        for i in dic:
+            if dic[i] > 1:
+                cnt += (dic[i]*(dic[i]-1)/2)%(10**9+7)
+        return cnt%(10**9+7)
