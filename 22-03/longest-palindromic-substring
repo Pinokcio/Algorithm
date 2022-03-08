@@ -1,0 +1,38 @@
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        ans = ""
+        length = len(s)
+        maxn = 1
+        l, r = 0, 0
+        for i in range(length):
+            mid = i
+            cnt = 1
+            while mid-cnt >= 0 and mid+cnt <= length-1:
+                if s[mid-cnt] == s[mid+cnt]:
+                    cnt += 1
+                else:
+                    break
+            cnt -= 1
+            if maxn < cnt*2+1:
+                l = mid - cnt
+                r = mid + cnt
+                maxn = cnt*2+1
+        for i in range(length):
+            mid1 = i
+            mid2 = i+1
+            cnt = 0
+            
+            while mid1-cnt >= 0 and mid2+cnt <= length-1:
+                if s[mid1-cnt] == s[mid2+cnt]:
+                    cnt += 1
+                else:
+                    break
+            if maxn < cnt*2:
+                l = mid1-cnt+1
+                r = mid2+cnt-1
+                maxn = cnt*2
+        return s[l:r+1]
