@@ -1,0 +1,56 @@
+class Solution(object):
+    def convert(self, s, numRows):
+        """
+        :type s: str
+        :type numRows: int
+        :rtype: str
+        """
+        li = [["" for i in range(len(s))]for j in range(numRows)]
+        y, x = 0, 0
+        if numRows == 1:
+            return s
+        for k in s:
+            li[y][x] = k
+            if y == 0:
+                flag = 1
+            elif y == numRows - 1:
+                flag = 0
+            if flag:
+                y += 1
+            else:
+                y -= 1
+                x += 1
+        return "".join(["".join(i) for i in li])
+        
+        
+######################################
+# 위보다 더 빠른 코드
+class Solution(object):
+    def convert(self, s, numRows):
+        """
+        :type s: str
+        :type numRows: int
+        :rtype: str
+        """
+        if numRows == 1:
+            return s
+        t = (numRows-1)*2
+        ans = []
+        k = 0
+        diff = t
+        while k < len(s):
+            ans.append(s[k])
+            k += diff
+        for i in range(1, numRows-1):
+            k = i
+            diff = t - i*2
+            while k < len(s):
+                ans.append(s[k])
+                k += diff
+                diff = t - diff
+        k = numRows-1
+        diff = t
+        while k < len(s):
+            ans.append(s[k])
+            k += diff
+        return "".join(ans)
