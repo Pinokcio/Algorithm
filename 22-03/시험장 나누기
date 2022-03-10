@@ -1,0 +1,53 @@
+import sys
+sys.setrecursionlimit(10**6)
+def postorder(num_t, num, links, p, target, cnt):
+    if p == -1:
+        return 0, cnt
+    n1, c1 = postorder(num_t, num, links, links[p][0], target, cnt)
+    n2, c2 = postorder(num_t, num, links, links[p][1], target, cnt)
+    cnt += (c1 + c2)
+    if num[p] + n1 + n2 > target:
+        cnt += 1
+        if n1 < n2:
+            if num[p] + n1 > target:
+                cnt += 1
+            else:
+                num_t[p] = num[p] + n1
+        else:
+            if num[p] + n2 > target:
+                cnt += 1
+            else:
+                num_t[p] = num[p] + n2
+    else:
+        num_t[p] = num[p] + n1 + n2            
+    #print(p,num_t[p], n1, n2, cnt)
+    return num_t[p], cnt
+
+def solution(k, num, links):
+    answer = 0
+    parent = [-1 for i in range(len(num))] #최상단 노드의 parent는 -1
+    
+    for i in range(len(links)):
+        if links[i][0] != -1:
+            parent[links[i][0]] = i
+        if links[i][1] != -1:
+            parent[links[i][1]] = i
+        
+    p = -1
+    for e,i in enumerate(parent):
+        if i == -1:
+            p = e
+            break
+            
+    s = max(num)
+    e = sum(num)
+    while s<=e:
+        mid = (s+e)//2
+        num_t = [num[i] for i in range(len(num))] #자신보다 아래 있는 노드 + 자신의 num 값을 모두 더한 값
+        num_t[p], cnt = postorder(num_t, num, links, p, mid, 0)
+        #print(num_t, cnt)
+        if cnt > k-1: #cnt를 줄이기 위해선 mid를 늘려야함. cnt를 늘리기 위해선 mid를 줄여야함.
+            s = mid + 1
+        else:
+            e = mid - 1
+    return s
