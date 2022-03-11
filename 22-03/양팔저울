@@ -1,0 +1,31 @@
+n1 = int(input())
+c = list(map(int, input().split()))
+n2 = int(input())
+m = list(map(int, input().split()))
+
+dp = [[0 for _ in range(sum(c)+1)]for _ in range(n1)]
+#dp[i][j] : i번까지의 추를 이용해서 
+for i in range(n1):
+    dp[i][0] = 1
+dp[0][c[0]] = 1
+for i in range(1, n1):
+    w = c[i]
+    for j in range(sum(c)-w+1):
+        if dp[i-1][j] == 1: #이전 추가 놓인 곳에 같이 놓아서 합을 통해 구슬의 무게를 맞추는 경우
+            dp[i][j+w] = 1  
+            dp[i][j] = 1
+        if w >= j:
+            if dp[i-1][j] == 1: #이전 추가 놓은 곳과 다른 곳에 놓아 차를 통해 구슬의 무게를 맞추는 경우
+                dp[i][w-j] = 1
+        if w <= j:
+            if dp[i-1][j] == 1:
+                dp[i][j-w] = 1
+#print(dp)
+for i in m:
+    if i > sum(c):
+        print('N', end = ' ')
+        continue
+    if dp[n1-1][i] == 1:
+        print('Y', end = ' ')
+    else:
+        print('N', end = ' ')
