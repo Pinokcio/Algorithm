@@ -1,0 +1,65 @@
+def solution(words, queries):
+    answer = []
+    dic = {}
+    dic_rev = {}
+    for w in words:
+        if len(w) in dic:
+            dic[len(w)].append(w)
+            dic_rev[len(w)].append(w[::-1])
+        else:
+            dic[len(w)] = [w]
+            dic_rev[len(w)] = [w[::-1]]
+    l = [[]for i in range(max(dic)+1)]
+    l_rev = [[]for i in range(max(dic)+1)]
+    for d in dic:
+        l[d] = sorted(dic[d])
+    for d in dic_rev:
+        l_rev[d] = sorted(dic_rev[d])
+    for q in queries:
+        li = []
+        t_s = 0
+        t_e = 0
+        if len(q) in dic:
+            if q[-1] == '?':
+                li = l[len(q)]
+            else:
+                li = l_rev[len(q)]
+                q = q[::-1]
+        else:
+            answer.append(0)
+            continue
+        s = 0
+        e = len(li)-1
+        while s<=e:
+            mid = (s+e)//2
+            tmp = 0
+            for i in range(len(q)):
+                if q[i] == '?':
+                    tmp = 0
+                    break
+                elif q[i] != li[mid][i]:
+                    tmp = ord(li[mid][i]) - ord(q[i])
+                    break
+            if tmp < 0:
+                s = mid + 1
+            else:
+                e = mid - 1
+        t_s = s
+        s = 0
+        e = len(li)-1
+        while s<=e:
+            mid = (s+e)//2
+            for i in range(len(q)):
+                if q[i] == '?':
+                    tmp = 0
+                    break
+                elif q[i] != li[mid][i]:
+                    tmp = ord(li[mid][i]) - ord(q[i])
+                    break
+            if tmp <= 0:
+                s = mid + 1
+            else:
+                e = mid - 1
+        t_e = e
+        answer.append(t_e - t_s + 1)
+    return answer
