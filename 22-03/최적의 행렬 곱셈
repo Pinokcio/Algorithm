@@ -1,0 +1,31 @@
+def getdp(dp, matrix, i, j):
+    if dp[i][j] != -1:
+        return dp[i][j]
+    
+    minn = 1234567890
+    index = 0
+    for k in range(i, j):
+        tmp = getdp(dp,matrix,i,k)+getdp(dp,matrix,k+1,j)+matrix[i][k][0]*matrix[i][k][1]*matrix[k+1][j][1]
+        if minn > tmp:
+            minn = tmp
+            index = k
+    dp[i][j] = minn
+    matrix[i][j] = [matrix[i][index][0],matrix[index+1][j][1]]
+    return dp[i][j]
+    
+def solution(matrix_sizes):
+    answer = 0
+    length = len(matrix_sizes)
+    matrix = [[[-1,-1] for _ in range(length)] for _ in range(length)]
+    dp = [[-1 for _ in range(length)] for _ in range(length)]
+    
+    for i in range(length):
+        matrix[i][i] = matrix_sizes[i]
+        dp[i][i] = 0
+    getdp(dp, matrix, 0, length-1)
+    answer = dp[0][length-1]
+    return answer
+
+"""
+dp[i][j] = 행렬 i~j까지의 곱
+"""
