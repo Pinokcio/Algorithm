@@ -1,0 +1,17 @@
+def solution(n):
+    answer = [0,3,11]
+    index = int(n/2)
+    if n % 2 != 0: return 0
+    if index < 3: return answer[index]
+
+    for i in range(3, index+1):
+        answer.append((3*answer[i-1]+sum(answer[1:i-1])*2+2)%1000000007)
+    return answer[index]
+
+"""
+매 짝수줄마다 특이한 모양이 2개 생김.
+즉, dp[4] = dp[2] * dp[2] + 2
+dp[6] = dp[4] * dp[2] + 2 + dp[2] * 2 / dp[4]*dp[2]+2는 dp[6]을 만들고 dp[6]에서 만들어지는 특이한 모양을 더한 값이다. dp[2]*2는 dp[2]와 dp[4]를 곱하여 도형을 만들때 dp[4]에서
+만들어지는 특이한 모양 2만큼을 dp[2]에 곱해준 값이다.
+dp[8] 또한 위와 같은 원리로 dp[8] = dp[6]*dp[2] + 2 + dp[4]*2(dp[4]에서 만들어지는 특이한 모양) + dp[2]*2(dp[6]에서 만들어지는 특이한 모양)
+"""
