@@ -1,0 +1,23 @@
+import sys
+sys.setrecursionlimit(10**6)
+cnt = 0
+def dfs(i, j):
+    if i == j == 0:
+        global cnt
+        cnt += 1
+        return
+    if i-1 >= 0:
+        dfs(i-1, j)
+    if j-1 >= i:
+        dfs(i, j-1)
+def solution(n):
+    answer = 0
+    dfs(n-1, n)
+    global cnt
+    answer = cnt
+    return answer
+
+"""
+'('의 남은 갯수가 ')'의 남은 갯수보다 항상 적거나 같다.
+이 조건을 사용해 dfs를 돌려 ')'와 '('의 남은 갯수가 0일때까지 도달한 갯수를 센다
+"""
