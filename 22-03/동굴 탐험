@@ -1,0 +1,50 @@
+from collections import deque
+import sys
+sys.setrecursionlimit(10**6)
+def dfs(t_node, node, n, st): #방향이 없는 node를 dfs를 통해 방문했던 곳은 재방문하지 않음으로써 일방향으로 만듦.
+    t_node[n] = []
+    st.add(n)
+    for i in node[n]:
+        if i not in st:
+            t_node[n].append(i)
+            dfs(t_node, node, i, st)
+        
+def solution(n, path, order):
+    answer = True
+    node = {}
+    dic_order = {}
+    q = deque()
+    q.append(0)
+    for p in path:
+        if p[0] in node:
+            node[p[0]].append(p[1])
+        else:
+            node[p[0]] = [p[1]]
+        if p[1] in node:
+            node[p[1]].append(p[0])
+        else:
+            node[p[1]] = [p[0]]
+    t_node = {}
+    dfs(t_node, node, 0, set())
+    
+    for o in order:
+        dic_order[o[1]] = o[0] 
+        
+    st = set()
+    log = set()
+    cnt = 0
+    while q:
+        tmp = q.popleft()
+        if tmp in dic_order and dic_order[tmp] not in st: #조건확인
+            q.append(tmp)
+            cnt += 1
+            if cnt == len(q): #큐를 한바퀴 돌 동안 아무곳에도 들릴 수 없다면 더 이상 방문할 수 있는 곳이 없으므로 반복문 종료
+                break
+            continue
+        st.add(tmp) #방문확인
+        cnt = 0
+        for i in t_node[tmp]: #자식노드 큐에 넣기
+            q.appendleft(i)
+    if len(st) != n: #방문한 노드의 갯수가 n개가 안될 경우 false
+        answer = False
+    return answer
