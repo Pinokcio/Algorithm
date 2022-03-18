@@ -1,0 +1,32 @@
+def getdp(dp, num, op, i, j):
+    if dp[i][j] != -1:
+        return dp[i][j]
+    
+    tmp = []
+    for k in range(i, j):
+        if op[k+1] == '+':
+            tmp.append(getdp(dp, num, op, i, k)+getdp(dp, num, op, k+1, j))
+        else:
+            tmp.append(getdp(dp, num, op, i, k)-getdp(dp, num, op, k+1, j))
+    if op[i] == '+':
+        dp[i][j] = max(tmp)
+    else:
+        dp[i][j] = min(tmp)
+    #print(i, j, tmp, dp[i][j])
+    return dp[i][j]
+    
+def solution(arr):
+    answer = -1
+    num = []
+    op = ["+"]
+    for i in range(len(arr)):
+        if i%2 == 0:
+            num.append(arr[i])
+        else:
+            op.append(arr[i])
+    dp = [[-1 for _ in range(len(num))] for _ in range(len(num))]
+    for i in range(len(num)):
+        dp[i][i] = eval(num[i])
+    answer = getdp(dp, num, op, 0, len(num)-1)
+    
+    return answer
