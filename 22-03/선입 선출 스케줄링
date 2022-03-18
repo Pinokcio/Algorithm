@@ -1,0 +1,28 @@
+import heapq as hq
+def solution(n, cores):
+    answer = 1
+    if n <= len(cores):
+        return n
+    s = 0
+    e = n * cores[-1]
+    while s<=e:
+        mid = (s+e)//2
+        cnt = 0
+        li = []
+        for i in cores:
+            cnt += (mid // i + 1)
+        if cnt < n:
+            s = mid + 1
+        else:
+            e = mid - 1
+    tmp = len(cores)
+    for i in range(len(cores)):
+        tmp += (s-1)//cores[i]
+    tmp = n - tmp
+    for i in range(len(cores)):
+        if s % cores[i] == 0:
+            tmp -= 1
+            if tmp == 0:
+                answer = i+1    
+                break
+    return answer
