@@ -1,0 +1,134 @@
+from collections import deque
+def solution(n, edges):
+    answer = 0
+    q = deque()
+    parent = [-1 for i in range(n+1)] #부모노드
+    depth = [-1 for i in range(n+1)] #루트노드로부터의 깊이
+    dic = {}
+    st = set()
+    f, s, t, k = 0, 0, 0, 0
+    for e in edges:
+        if e[0] in dic:
+            dic[e[0]].append(e[1])
+        else:
+            dic[e[0]] = [e[1]]
+        if e[1] in dic:
+            dic[e[1]].append(e[0])
+        else:
+            dic[e[1]] = [e[0]]
+    
+    q.append((1, 0))
+    depth[1] = 0
+    st.add(1)
+    parent[1] = 1
+    while q:
+        node, d = q.popleft()
+        for i in dic[node]:
+            if i not in st:
+                st.add(i)
+                parent[i] = node
+                depth[i] = d+1
+                q.append((i, d+1))
+    #여기까지가 depth 및 parent 구하는 과정
+    base = 0
+    maxn = 0
+    for i in range(1, n+1):
+        if maxn<depth[i]:
+            base = i
+            maxn = depth[i]
+    f = base # depth가 가장 깊은 노드를 f로 지정
+    q = deque()
+    q.append((base, 0))
+    st = set()
+    st.add(base)
+    res = [-1 for i in range(n+1)]
+    res[base] = 0
+    while q:
+        node, d = q.popleft()
+        if parent[node] not in st:
+            st.add(parent[node])
+            res[parent[node]] = d+1
+            q.append((parent[node], d+1))
+        for i in dic[node]:
+            if i not in st:
+                st.add(i)
+                res[i] = d+1
+                q.append((i, d+1))
+    #여기까지가 f와 먼 노드를 구하는 과정
+    base = 0
+    maxn = 0
+    for i in range(1, n+1):
+        if maxn<res[i]:
+            base = i
+            maxn = res[i]
+    s = base #f와 가장 먼 노드를 s로 지정
+    q = deque()
+    q.append((base, 0))
+    st = set()
+    st.add(base)
+    res = [-1 for i in range(n+1)]
+    res[base] = 0
+    while q:
+        node, d = q.popleft()
+        if parent[node] not in st:
+            st.add(parent[node])
+            res[parent[node]] = d+1
+            q.append((parent[node], d+1))
+        for i in dic[node]:
+            if i not in st:
+                st.add(i)
+                res[i] = d+1
+                q.append((i, d+1))
+    #여기까지가 s와 먼 노드 구하는 과정
+    base = 0
+    maxn = 0
+    for i in range(1, n+1):
+        if maxn<res[i]:
+            if i == f:
+                continue
+            base = i
+            maxn = res[i]
+    answer = maxn
+    t = base #s와 가장 멀면서 f가 아닌 노드를 t로 지정
+    base = f
+    q = deque()
+    q.append((base, 0))
+    st = set()
+    st.add(base)
+    res = [-1 for i in range(n+1)]
+    res[base] = 0
+    while q:
+        node, d = q.popleft()
+        if parent[node] not in st:
+            st.add(parent[node])
+            res[parent[node]] = d+1
+            q.append((parent[node], d+1))
+        for i in dic[node]:
+            if i not in st:
+                st.add(i)
+                res[i] = d+1
+                q.append((i, d+1))
+    #여기까지가 s와 먼 노드 구하는 과정
+    base = 0
+    maxn = 0
+    for i in range(1, n+1):
+        if maxn<res[i]:
+            if i == s :
+                continue
+            base = i
+            maxn = res[i]
+    k = base #f와 가장 멀면서 s가 아닌 노드를 k로 지정
+    answer = max(answer, maxn) #이 때 거리가 answer
+    return answer
+"""
+1. 트리구조 -> 부모노드와의 거리 = 1, 형제노드와의 거리 = 2, 루트노드와의 거리를 통해 상대적인 위치를 구할 수 있나? x, 부모노드간의 거리를 통해 상대적인 위치를 구할 수 있나?
+2. 3 <= n <= 250,000 (nlogn)
+3. 트리구조에서 세 노드 사이의 거리의 중간값이 가장 크도록 하는 방법? 
+    3.1 두 노드가 서로 부모-자식관계(해당 경우는 모든 경우에 대해 1로 최소임)가 아닐 경우 최소 = 2(부모 노드가 같은 경우), 최대 = d_i + d_j
+    3.2 depth가 가장 큰 노드 하나를 기준으로 최대한 parent가 늦게 만나는 두 노드를 고른다. -> 반례 존재
+    3.3
+        3.3.1 depth가 가장 큰 노드(f) 하나를 기준으로 최대한 parent가 늦게 만나는 노드 하나를 고른다. 이를             s라 한다.
+        3.3.2 위와 마찬가지로 s와 최대한 늦게 만나는 노드를 하나 고른다. 다만 이는 f와 다른 노드이다. 이를 t             라 한다.
+        3.3.3 f와 최대한 늦게 만나는 노드 중 s가 아닌 것을 k라 한다.
+        3.3.4 f와 s사이의 거리는 해당 트리에서 최대이고, f와 두번째로 먼 노드인 k와의 거리 혹은 s와 두번째로             먼 노드인 t와의 거리가 정답이 된다.
+"""
