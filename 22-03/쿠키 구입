@@ -1,0 +1,31 @@
+def solution(cookie):
+    answer = 0
+    sum_c = [[0 for _ in range(len(cookie))] for _ in range(len(cookie))]
+    
+    for i in range(len(cookie)):
+        sum_c[i][i] = cookie[i]
+    
+    for i in range(len(cookie)):
+        for j in range(i+1, len(cookie)):
+            sum_c[i][j] = sum_c[i][j-1] + cookie[j]
+            
+    for i in range(len(cookie)):
+        for j in range(i+1, len(cookie)):
+            if sum_c[i][len(cookie)-1] // 2 <= answer:
+                break
+            s = i
+            e = j
+            while s<=e:
+                mid = (s+e)//2
+                if sum_c[i][mid] == sum_c[mid][j]-cookie[mid]:
+                    answer = max(answer, sum_c[i][mid])
+                    break
+                elif sum_c[i][mid] > sum_c[mid][j]-cookie[mid]:
+                    e = mid - 1
+                else:
+                    s = mid + 1
+    return answer
+"""
+N^2*logN까지 가능할 범위였기에 N^2(logN+1+1/N) 쯤 되는 코드를 짰으나 시간 초과가 뜸
+그런 이유로 if sum_c[i][len(cookie)-1] // 2 <= answer : break 를 추가해서 유망한 범위에 대해서만 서치하도록 수정
+"""
