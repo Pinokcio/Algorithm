@@ -1,0 +1,39 @@
+class Solution(object):
+    def myAtoi(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        st, e = -1, -1
+        flag = 0
+        for i in range(len(s)):
+            if not (((s[i] == '-' or s[i] == '+' or s[i] == ' ') and flag == 0) or str.isdigit(str(s[i]))):
+                break
+            if s[i] == '-' or s[i] == '+':
+                if i == len(s)-1 or (not str.isdigit(str(s[i+1]))):
+                    return 0
+            if str.isdigit(str(s[i])):
+                if st == -1:
+                    st = i
+                    flag = 1
+                e = i
+        if st == e == -1:
+            return 0
+        if st-1>=0 and s[st-1] == '-':
+            s = s[st:e+1]
+            answer = -1 * int(s)
+            if -1*pow(2,31)<=answer<=pow(2,31)-1:
+                return answer
+            elif answer<-1*pow(2,31):
+                return -1*pow(2,31)
+            else:
+                return pow(2,31)-1
+        s = s[st:e+1]
+        answer = int(s)
+        if -1*pow(2,31)<=answer<=pow(2,31)-1:
+            return answer
+        elif answer<-1*pow(2,31):
+            return -1*pow(2,31)
+        else:
+            return pow(2,31)-1
+                
