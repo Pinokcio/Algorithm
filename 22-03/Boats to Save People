@@ -1,0 +1,31 @@
+from collections import deque
+class Solution(object):
+    def numRescueBoats(self, people, limit):
+        """
+        :type people: List[int]
+        :type limit: int
+        :rtype: int
+        """
+        people.sort()
+        length = len(people)
+        answer = 0
+        while len(people) != 0:
+            t = people[0]
+            s = 1
+            e = length-1
+            while s<=e:
+                mid = (s+e)//2
+                if t+people[mid]<=limit:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            if e >= length or e <= 0:
+                length -= 1
+                del people[0]
+                answer += 1
+            else:
+                length -= 2
+                del people[e]
+                del people[0]
+                answer += 1
+        return answer
