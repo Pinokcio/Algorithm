@@ -1,0 +1,15 @@
+class Solution(object):
+    def twoCitySchedCost(self, costs):
+        """
+        :type costs: List[List[int]]
+        :rtype: int
+        """
+        sub = [(c[0]-c[1], e) for e,c in enumerate(costs)]
+        sub.sort()
+        n = int(len(costs)/2)
+        answer = 0
+        for i in range(n):
+            answer += costs[sub[i][1]][0]
+        for i in range(n, 2*n):
+            answer += costs[sub[i][1]][1]
+        return answer
