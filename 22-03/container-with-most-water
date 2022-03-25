@@ -1,0 +1,21 @@
+class Solution(object):
+    def maxArea(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        tu = []
+        for i in range(len(height)):
+            tu.append((height[i], i))
+        tu.sort(reverse = True, key = lambda x : [x[0], -x[1]])
+        x_s = tu[0][1] if tu[0][1] < tu[1][1] else tu[1][1]
+        x_e = tu[1][1] if tu[1][1] > tu[0][1] else tu[0][1]
+        maxn = (x_e - x_s) * tu[1][0]
+        for t in range(2, len(tu)):
+            maxn = max(maxn, tu[t][0]*abs(tu[t][1] - x_s))
+            maxn = max(maxn, tu[t][0]*abs(tu[t][1] - x_e))
+            if x_s > tu[t][1]:
+                x_s = tu[t][1]
+            if x_e < tu[t][1]:
+                x_e = tu[t][1]
+        return maxn
