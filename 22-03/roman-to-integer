@@ -1,0 +1,19 @@
+from collections import deque
+class Solution(object):
+    def romanToInt(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        q = deque()
+        dic = {'I':1, 'V':5, 'X':10, 'L':50, 'C':100, 'D':500, 'M':1000}
+        answer = 0
+        for i in s:
+            q.append(dic[i])
+        while q:
+            tmp = q.popleft()
+            if q and tmp < q[0]:
+                answer -= tmp
+            else:
+                answer += tmp
+        return answer
