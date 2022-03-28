@@ -1,0 +1,17 @@
+def dfs(self, i, j, tmp, answer):
+    if i == j == 0:
+        answer.append("".join(tmp))
+        return
+    if i > 0:
+        temp = tmp[:]
+        temp.append("(")
+        dfs(self, i-1, j, temp, answer)
+    if j > 0 and i < j:
+        temp = tmp[:]
+        temp.append(")")
+        dfs(self, i, j-1, temp, answer)
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        answer = []
+        dfs(self, n, n, [], answer)
+        return answer
