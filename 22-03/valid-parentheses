@@ -1,0 +1,20 @@
+from collections import deque
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        q = deque()
+        for i in list(s):
+            if i == '(' or i == '[' or i == '{':
+                q.append(i)
+            else:
+                if not q:
+                    return False
+                tmp = q.pop()
+                if not ((i == ')' and tmp == '(') or (i == '}' and tmp == '{') or (i == ']' and tmp == '[')):
+                    return False
+        if q:
+            return False
+        return True
