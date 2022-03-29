@@ -1,0 +1,12 @@
+class Solution(object):
+    def findDuplicate(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        dic = {}
+        for n in nums:
+            if n in dic:
+                return n
+            else:
+                dic[n] = 1
