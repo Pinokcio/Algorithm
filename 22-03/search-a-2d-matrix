@@ -1,0 +1,23 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        s = 0
+        e = len(matrix)-1
+        while s<=e:
+            mid = (s+e)//2
+            if matrix[mid][0] <= target:
+                s = mid + 1
+            else:
+                e = mid - 1
+        fix = e
+        
+        s = 0
+        e = len(matrix[fix])-1
+        while s<=e:
+            mid = (s+e)//2
+            if matrix[fix][mid] == target:
+                return True
+            elif matrix[fix][mid] < target:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return False
