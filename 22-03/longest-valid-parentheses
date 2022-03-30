@@ -1,0 +1,51 @@
+from collections import deque
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        q = deque()
+        nums = [0 for _ in range(len(s))]
+        for e, i in enumerate(s):
+            if i == "(":
+                q.append(e)
+            else:
+                if q:
+                    nums[q.pop()] = 1
+                    nums[e] = 1
+        ans = 0
+        maxn = 0
+        for i in nums:
+            if i == 1:
+                ans += 1
+            else:
+                ans = 0
+            maxn = max(maxn, ans)
+        return maxn
+        
+################################
+#leetcode에서 제공한 정답
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        left = 0
+        right = 0
+        maxn = 0
+        for i in s:
+            if i == "(":
+                left += 1
+            else:
+                right += 1
+            if left == right:
+                maxn = max(maxn, right)
+            elif right > left:
+                left = right = 0
+        left = 0
+        right = 0
+        for i in s[::-1]:
+            if i == ")":
+                right += 1
+            else:
+                left += 1
+            if left == right:
+                maxn = max(maxn, left)
+            elif right < left:
+                left = right = 0
+        
+        return maxn * 2
