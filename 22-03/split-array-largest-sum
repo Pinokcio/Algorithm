@@ -1,0 +1,27 @@
+class Solution:
+    def splitArray(self, nums: List[int], m: int) -> int:
+        length = len(nums)
+        accum = [0 for _ in range(length)]
+        accum[0] = nums[0]
+        for i in range(1, length):
+            accum[i] = accum[i-1] + nums[i]
+        s = accum[0]
+        e = accum[-1]
+        #print(accum)
+        ans = 0
+        while s<=e:
+            mid = (s+e)//2
+            cnt = 0
+            tmp = 0
+            for i in range(length-1):
+                if cnt == m-1:
+                    break
+                if accum[i] - tmp <= mid and accum[i+1] - tmp > mid:
+                    cnt += 1
+                    tmp = accum[i]
+            if accum[-1] - tmp > mid:
+                s = mid + 1
+            else:
+                e = mid - 1
+                    
+        return s
