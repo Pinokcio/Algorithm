@@ -1,0 +1,46 @@
+def div(dividend, divisor):
+    culnu = 0
+    divcnt = 0
+    shift = dividend>>1
+    while shift >= divisor:
+        tmp = shift + shift
+        if dividend != tmp:
+            culnu += (1<<divcnt)
+        dividend = shift
+        divcnt += 1
+        shift = dividend>>1
+    ans = 1<<divcnt
+    culnu += ((dividend - divisor)<<divcnt)
+    return ans, culnu
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        ans = 0
+        if dividend == 0:
+            return 0
+        ismina = False
+        if dividend < 0 and divisor > 0:
+            dividend = -dividend
+            ismina = True
+        elif dividend > 0 and divisor < 0:
+            ismina = True
+            divisor = -divisor
+        elif dividend < 0 and divisor < 0:
+            divisor = -divisor
+            dividend = -dividend
+        if dividend < divisor:
+            return 0
+        
+        culnu = dividend
+        while culnu >= divisor:
+            dividend, culnu = div(culnu, divisor)
+            ans += dividend
+            
+        if ismina:
+            ans = -ans
+        if ans > pow(2,31)-1:
+            return pow(2,31)-1
+        elif ans < pow(-2,31):
+            return pow(-2,31)
+        else:
+            return ans
+            
