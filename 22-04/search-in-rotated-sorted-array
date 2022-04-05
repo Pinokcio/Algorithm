@@ -1,0 +1,33 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        length = len(nums)
+        base = nums[-1]
+        s = 0
+        e = length - 2
+        while s<=e:
+            mid = (s+e)//2
+            if nums[mid] <= base:
+                e = mid - 1
+            else:
+                s = mid + 1
+        index = s
+        if index == 0:
+            s = 0
+            e = length - 1
+        elif target == nums[index]:
+            return index
+        elif nums[index] < target <= nums[-1]:
+            s = index + 1
+            e = length - 1
+        else:
+            s = 0
+            e = index - 1
+        while s <= e:
+            mid = (s+e)//2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return -1
