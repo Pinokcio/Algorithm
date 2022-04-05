@@ -19,3 +19,17 @@ class Solution(object):
             if x_e < tu[t][1]:
                 x_e = tu[t][1]
         return maxn
+##################################### 더 나아진 풀이
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        length = len(height)
+        maxn = 0
+        s = 0
+        e = length-1
+        while s!=e:
+            maxn = max(maxn, (e-s)*min(height[s],height[e]))
+            if height[s] >= height[e]:
+                e -= 1
+            else:
+                s += 1
+        return maxn
