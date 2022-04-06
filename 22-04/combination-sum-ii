@@ -1,0 +1,30 @@
+def dfs(sum, n, target, his, dic, ans):
+    #print(his)
+    if sum == target:
+        ans.append(his)
+        return 
+    
+    if sum < target:
+        for i in dic:
+            if i < n:
+                continue
+            if dic[i] >= 1 and sum + i <= target:
+                dic[i] -= 1
+                temp = his[:]
+                temp.append(i)
+                dfs(sum + i, i, target, temp, dic, ans)
+                dic[i] += 1
+        
+        
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        ans = []
+        candidates.sort()
+        dic = {}
+        for i in candidates:
+            if i in dic:
+                dic[i] +=1
+            else:
+                dic[i] = 1
+        dfs(0, 0, target, [], dic, ans)
+        return ans
