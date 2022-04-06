@@ -1,0 +1,20 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        n_r = [[0 for _ in range(9)] for _ in range(9)]
+        n_c = [[0 for _ in range(9)] for _ in range(9)]
+        n_m = [[0 for _ in range(9)] for _ in range(9)]
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == ".":
+                    continue
+                tmp = int(board[i][j])-1
+                if n_r[tmp][i]:
+                    return False
+                n_r[tmp][i] = 1
+                if n_c[tmp][j]:
+                    return False
+                n_c[tmp][j] = 1
+                if n_m[tmp][i//3*3+j//3]:
+                    return False
+                n_m[tmp][i//3*3+j//3] = 1
+        return True
