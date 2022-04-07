@@ -1,0 +1,22 @@
+import heapq as hq
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        stones = [-i for i in stones]
+        hq.heapify(stones)
+        while True:
+            if stones:
+                s1 = -hq.heappop(stones)
+            else:
+                break
+            if stones:
+                s2 = -hq.heappop(stones)
+            else:
+                break
+            if s1 == s2:
+                s1 = 123456789
+                s2 = 123456789
+            else:
+                hq.heappush(stones, -abs(s2-s1))
+        if s1 == 123456789:
+            return 0
+        return s1
