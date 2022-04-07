@@ -1,0 +1,19 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        length = len(nums)
+        if length == 1:
+            return 0
+        cnt = 1
+        cur = 0
+        nxt = nums[cur]
+        while cur + nxt < length - 1:
+            maxn = 0
+            idx = 0
+            for i in range(cur + 1, cur + nxt + 1):
+                if maxn < i + nums[i]:
+                    maxn = i + nums[i]
+                    idx = i
+            cur = idx
+            nxt = nums[cur]
+            cnt += 1
+        return cnt
