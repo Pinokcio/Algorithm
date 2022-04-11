@@ -18,3 +18,13 @@ class Solution:
             if cur + nums[cur] >= length-1:
                 return True
             
+###################################################### 더 나은 해결책
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        cur = nums[0]
+        length = len(nums)
+        for i in range(length - 1):
+            cur = max(cur, i + nums[i])
+            if cur <= i:
+                return False
+        return True
