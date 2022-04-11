@@ -1,0 +1,27 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        x = 0
+        y = 0
+        dx = 1
+        dy = 0
+        len_x = len(matrix[0])
+        len_y = len(matrix)
+        ans = []
+        mem = [[0 for _ in range(len_x)] for _ in range(len_y)]
+        while True:
+            ans.append(matrix[y][x])
+            mem[y][x] = 1
+            if y+dy < 0 or y + dy > len_y-1 or x + dx < 0 or x + dx > len_x-1 or mem[y+dy][x+dx] == 1:
+                if dx == 1 and dy == 0:
+                    dx, dy = 0, 1
+                elif dx == 0 and dy == 1:
+                    dx, dy = -1, 0
+                elif dx == -1 and dy == 0:
+                    dx, dy = 0, -1
+                else:
+                    dx, dy = 1, 0
+                if y+dy < 0 or y + dy > len_y-1 or x + dx < 0 or x + dx > len_x-1 or mem[y+dy][x+dx] == 1:
+                    break
+            x += dx
+            y += dy
+        return ans
