@@ -1,0 +1,24 @@
+class Solution:
+    def findTheDistanceValue(self, arr1: List[int], arr2: List[int], d: int) -> int:
+        arr2.sort()
+        length = len(arr2)
+        ans = 0
+        for i in arr1:
+            s = 0
+            e = length - 1
+            while s<=e:
+                mid = (s+e)//2
+                if arr2[mid] < i:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            if 0 < s < length:
+                if arr2[s-1] < i - d and i + d < arr2[s]:
+                    ans += 1
+            elif s <= 0:
+                if i + d < arr2[0]:
+                    ans += 1
+            else:
+                if i - d > arr2[-1]:
+                    ans += 1
+        return ans
