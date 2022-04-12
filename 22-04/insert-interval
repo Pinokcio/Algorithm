@@ -1,0 +1,37 @@
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        ans = []
+        s = newInterval[0]
+        e = newInterval[1]
+        flag = 0
+        count = 0
+        length = len(intervals)
+        if intervals == []:
+            return [newInterval]
+        if e < intervals[0][0]:
+            ans = [newInterval] + intervals
+            return ans
+        if s > intervals[-1][1]:
+            intervals.append(newInterval)
+            return intervals
+        
+        for idx, i in enumerate(intervals):
+            if flag == 0 and i[1] >= newInterval[0] and count == 0:
+                s = min(i[0], newInterval[0])
+                flag = 1
+            if flag == 1:
+                if i[0] <= newInterval[1]:
+                    e = max(i[1], newInterval[1])
+                    if idx == length-1 and count == 0: 
+                        ans.append([s, e])
+                        count = 1
+                else:
+                    flag = 0
+                    ans.append([s, e])
+                    count = 1
+            if flag == 0:
+                ans.append(i)
+            #print(ans)
+        if count == 0:
+            ans.append(newInterval)
+        return ans
