@@ -1,0 +1,37 @@
+class Solution:
+    def checkneighbor(self, board, y, x, len_y, len_x):
+        cnt = 0
+        for i in range(max(0, y-1), min(y+2, len_y)):
+            for j in range(max(0, x-1), min(x+2, len_x)):
+                if i == y and j == x:
+                    continue
+                if board[i][j] == 1:
+                    cnt += 1
+        return cnt
+                
+    def gameOfLife(self, board: List[List[int]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        
+        len_y = len(board)
+        len_x = len(board[0])
+        temp_board = [[0 for _ in range(len_x)] for _ in range(len_y)]
+        for i in range(len_y):
+            for j in range(len_x):
+                cnt = self.checkneighbor(board, i, j, len_y, len_x)
+                #print(i, j, cnt, board[i][j])
+                if board[i][j] == 1:
+                    if cnt < 2 or cnt > 3:
+                        temp_board[i][j] = 0
+                    else:
+                        temp_board[i][j] = board[i][j]
+                elif board[i][j] == 0:
+                    if cnt == 3:
+                        temp_board[i][j] = 1
+                    else:
+                        temp_board[i][j] = board[i][j]
+                #print(temp_board[i][j], board[i][j])
+        for i in range(len_y):
+            for j in range(len_x):
+                board[i][j] = temp_board[i][j]
