@@ -1,0 +1,30 @@
+from collections import deque
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        dx = [1, 0, -1, 0]
+        dy = [0, 1, 0, -1]
+        q = deque()
+        len_y = len(grid)
+        len_x = len(grid[0])
+        orange_cnt = 0
+        rotten_cnt = 0
+        for e1,i in enumerate(grid):
+            for e2,j in enumerate(i):
+                if j == 1 or j == 2:
+                    if j == 2:
+                        q.append([e1, e2, 0])
+                        rotten_cnt += 1
+                    orange_cnt += 1
+        day = 0
+        while q:
+            y, x, day = q.popleft()
+            flag = 0
+            for i in range(4):
+                if 0<=y+dy[i]<len_y and 0<=x+dx[i]<len_x and grid[y+dy[i]][x+dx[i]] == 1:
+                    grid[y+dy[i]][x+dx[i]] = 2
+                    q.append([y+dy[i], x+dx[i], day+1])
+                    rotten_cnt += 1
+                    
+        if orange_cnt == rotten_cnt:
+            return day
+        return -1
