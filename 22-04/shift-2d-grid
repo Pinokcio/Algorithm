@@ -1,0 +1,11 @@
+class Solution:
+    def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+        len_x = len(grid[0])
+        len_y = len(grid)
+        ans = [[0 for _ in range(len_x)] for _ in range(len_y)]
+        for y in range(len_y-1, -1, -1):
+            for x in range(len_x-1, -1, -1):
+                tmp = (x+k)%len_x
+                tmp_t = (x+k)//len_x
+                ans[(y+tmp_t)%len_y][tmp] = grid[y][x]
+        return ans
