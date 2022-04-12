@@ -1,0 +1,29 @@
+def checkQ(i, memo, n, ans):
+    if i == n:
+        #print(memo)
+        board = [["." for _ in range(n)] for _ in range(n)]
+        for k in range(n):
+            board[memo[k]][k] = "Q"
+        tmp = ["".join(board[z]) for z in range(n)]
+        ans.append(tmp)
+        return
+    
+    for x in range(n):
+        if memo[x] == -1:
+            for h in range(1, i+1):
+                if (x-h >= 0 and memo[x-h] == i-h) or (x+h < n and memo[x+h] == i-h):
+                    break
+            else:
+                tmp = memo[:]
+                tmp[x] = i
+                checkQ(i+1, tmp, n, ans)
+    
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        memo = [-1 for _ in range(n)]
+        ans = []
+        checkQ(0, memo, n, ans)
+        return ans
+        
+        
+#memo[x] = i : x열 i행에 Q가 있음.
