@@ -1,0 +1,18 @@
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        s = 0
+        e = len(arr)-1
+        while s<=e:
+            mid = (s+e)//2
+            t = arr[mid] - (mid + 1)
+            if t >= k:
+                e = mid - 1
+            else:
+                s = mid + 1
+        return arr[e] + k-(arr[e]-(e+1))
+            
+"""
+element가 4개인데 마지막 숫자가 7이면 3개의 missing number가 있다는 뜻
+즉 missing number의 갯수는 ((arr[index] - (index + 1)) 와 같음
+이를 t라 했을 때 t가 k보다 크면 index를 줄여야겠고, 작으면 index를 늘린다.
+"""
