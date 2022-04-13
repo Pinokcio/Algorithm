@@ -8,3 +8,18 @@ class Solution:
         if cul == n:
             return k
         return k-1
+
+#################### binary search로 푼 코드. O(logN)
+class Solution:
+    def arrangeCoins(self, n: int) -> int:
+        s = 1
+        e = n
+        while s<=e:
+            mid = (s+e)//2
+            if mid * (mid+1) // 2 == n:
+                return mid
+            elif mid * (mid+1) // 2 > n:
+                e = mid - 1
+            else:
+                s = mid + 1
+        return s - 1
