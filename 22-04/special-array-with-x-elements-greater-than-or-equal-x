@@ -1,0 +1,24 @@
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        nums.sort()
+        s = 0
+        e = nums[-1]
+        while s<=e:
+            mid = (s+e)//2
+            cnt = 0
+            for i in nums:
+                if i >= mid:
+                    cnt += 1
+            if cnt == mid:
+                return mid
+            elif cnt > mid:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return -1
+        
+        
+        
+"""
+x보다 크거나 같은 수가 nums 안에 x개 있으면 x를 special하다고 한다.
+"""
