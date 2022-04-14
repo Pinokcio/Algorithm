@@ -1,0 +1,33 @@
+class StreamChecker:
+
+    def __init__(self, words: List[str]):
+        self.stream = deque([])
+        self.trie = {}
+        
+        for word in set(words): #처음 받은 words셋의 word를 trie에 역순으로 넣음. 마지막에 '$'에 전체 단어가 무엇이었는지 저장
+            node = self.trie
+            for c in word[::-1]:
+                if c not in node:
+                    node[c] = {}
+                node = node[c]
+            node['$'] = word
+            
+    def query(self, letter: str) -> bool:
+        self.stream.appendleft(letter) #letter을 stream에 하나씩 저장
+        node = self.trie #words셋을 trie 형태로 저장한 Tree를 가져옴
+        for c in self.stream: #이전까지 저장한 letter까지 모두 포함한 deque를 가져옴
+            if '$' in node: #현재 노드에 '$'가 있다는 것 = 현재 노드까지 이루어진 character로 만들어진 단어가 words셋에 있음 => 현재 상태의 letter셋은 words셋의 어떤 단어의 suffix임 
+                return True
+            if c not in node: # 더 이상 해당 letter 셋으로 구성된 suffix가 존재하지 않음
+                return False
+            node = node[c] #이어진 다음 노드로 감
+        return '$' in node #letter셋 전체와 같은 word가 words셋에 있음
+        
+
+# Your StreamChecker object will be instantiated and called as such:
+# obj = StreamChecker(words)
+# param_1 = obj.query(letter)
+"""
+타인의 풀이를 가져와서 코드 분석.
+다수의 words를 char단위로 끊어 저장하는 자료구조 Trie Node를 사용함.
+"""
