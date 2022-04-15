@@ -1,0 +1,28 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
+        if root is None:
+            return root
+        if root.val > high:
+            return self.trimBST(root.left, low, high)
+        if root.val < low:
+            return self.trimBST(root.right, low, high)
+        
+        root.left = self.trimBST(root.left, low, high)
+        root.right = self.trimBST(root.right, low, high)
+        return root    
+    
+"""
+모든 노드에서 left는 val보다 작고 right는 val보다 크다. 
+=> 모든 노드에서 규칙이 동일하므로, 재귀를 적용시킬 수 있다.
+1. 현재 노드가 None이면 None을 리턴
+2. 현재 노드가 high보다 크면 trimBST(left)를 리턴
+3. 현재 노드가 low보다 작으면 trimBST(right)를 리턴
+위 조건들을 모두 거치면 현재 노드는 None도 아니며 high보다 작거나 같고, low보다 크거나 같은 올바른 노드일 것이다.
+이 후 자신의 자식 노드 또한 같은 조건을 충족시킬 수 있도록 각각을 호출해준다.
+"""
