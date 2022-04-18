@@ -1,0 +1,14 @@
+class Solution:
+    def checkIfExist(self, arr: List[int]) -> bool:
+        dic = {}
+        for a in arr:
+            if a in dic:
+                dic[a] += 1
+            else:
+                dic[a] = 1
+        for i in arr:
+            if i == 0 and dic[i] >= 2:
+                return True
+            elif i != 0 and i%2 == 0 and i//2 in dic:
+                return True
+        return False
