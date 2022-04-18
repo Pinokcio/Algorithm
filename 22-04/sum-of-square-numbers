@@ -1,0 +1,18 @@
+class Solution:
+    def judgeSquareSum(self, c: int) -> bool:
+        sqrt_c = int(sqrt(c))
+        for i in range(sqrt_c+1): #루트c
+            s = i
+            e = sqrt_c
+            powi = pow(i,2)
+            while s<=e: #log루트c
+                mid = (s+e)//2
+                tmp = mid**2
+                if tmp == c - powi:
+                    return True
+                elif tmp < c - powi:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+        return False
+        
