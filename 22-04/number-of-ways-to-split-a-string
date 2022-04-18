@@ -1,0 +1,19 @@
+class Solution:
+    def numWays(self, s: str) -> int:
+        ones_index = []
+        mod = 10**9+7
+        for i in range(len(s)):
+            if s[i] == "1":
+                ones_index.append(i)
+        length = len(ones_index)
+        if length == 0:
+            return ((len(s)-1)*(len(s)-2)//2)%mod
+        if length % 3 != 0:
+            return 0
+        s_e_index = []
+        t = len(ones_index) // 3
+        idx1 = ones_index[t-1]
+        idx2 = ones_index[t]
+        idx3 = ones_index[2*t - 1]
+        idx4 = ones_index[2*t]
+        return ((idx2 - idx1) * (idx4 - idx3))%mod
