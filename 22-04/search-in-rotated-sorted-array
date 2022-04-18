@@ -31,3 +31,43 @@ class Solution:
             else:
                 e = mid - 1
         return -1
+#########################################
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        k = nums[-1]
+        length = len(nums)
+        if target == k:
+            return length - 1
+        s = 0
+        e = length - 1
+        while s<=e:
+            mid = (s+e)//2
+            if nums[mid] < k:
+                e = mid - 1
+            else:
+                s = mid + 1
+        mid_s = s
+        if target > k:
+            s = 0
+            e = mid_s - 1
+        else:
+            s = mid_s
+            e = length-2
+        while s<=e:
+            mid = (s+e)//2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return -1
+    
+    
+    """
+    rotate 한 결과가 다를수도 있고, 하기전과 같을수도 있음
+    s = 0, e = len(nums)-1로 두고 k를 nums[-1]로 둔 후
+    k보다 작은 것 중 가장 왼쪽에 있는 걸 찾으면 해당 위치부터 rotate 시작임.
+    이제 target이 k보다 작은 경우엔 s = s_s, e = len(nums)-1로, target이 k보다 큰 경우엔
+    s = 0, e = s_s-1로 두고 binary search해서 target이 있으면 true 없으면 false 리턴
+    """
