@@ -1,0 +1,14 @@
+class Solution:
+    def maxDistance(self, nums1: List[int], nums2: List[int]) -> int:
+        ans = 0
+        for i in range(len(nums1)):
+            s = i
+            e = len(nums2)-1
+            while s<=e:
+                mid = (s+e)//2
+                if nums2[mid] >= nums1[i]:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            ans = max(ans, e - i)
+        return ans
