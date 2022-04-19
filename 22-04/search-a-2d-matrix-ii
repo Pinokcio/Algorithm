@@ -1,0 +1,38 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        visit_x = set()
+        visit_y = set()
+        len_y = len(matrix)
+        len_x = len(matrix[0])
+        x, y = 0, 0
+        while True:
+            s = 0
+            e = len_x-1
+            while s<=e:
+                mid = (s+e)//2
+                if matrix[y][mid] == target:
+                    return True
+                elif matrix[y][mid] < target:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            x = e
+            if x in visit_x:
+                return False
+            visit_x.add(x)
+            s = 0
+            e = len_y-1
+            while s<=e:
+                mid = (s+e)//2
+                if matrix[mid][x] == target:
+                    return True
+                elif matrix[mid][x] < target:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            y = s
+            if y >= len_y:
+                y -= 1
+            if y in visit_y:
+                return False
+            visit_y.add(y)
