@@ -1,16 +1,15 @@
+import math
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         length = len(nums)
-        culm = [0 for i in range(length)]
-        culm[0] = nums[0]
+        culm = [nums[i] for i in range(length)]
         for i in range(1, length):
-            culm[i] = culm[i-1] + nums[i]
-        ans = 123456789
-        flag = 0
+            culm[i] += culm[i-1]
+        ans = math.inf
+        if culm[length-1] < target:
+                return 0
         for i in range(length):
             if i != 0 and culm[length-1] - culm[i-1] < target:
-                break
-            if i == 0 and culm[length-1] < target:
                 break
             s = i
             e = length-1
@@ -31,6 +30,6 @@ class Solution:
                 tmp = culm[s]
             if tmp >= target:
                 ans = min(ans, s - i + 1)
-        if ans != 123456789:
+        if ans != math.inf:
             return ans
         return 0
