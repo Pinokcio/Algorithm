@@ -1,0 +1,21 @@
+class Solution:
+    def triangleNumber(self, nums: List[int]) -> int:
+        nums.sort()
+        length = len(nums)
+        ans = 0
+        for i in range(0, length-2):
+            for j in range(i+1, length-1):
+                s = j+1
+                e = length-1
+                while s<=e:
+                    mid = (s+e)//2
+                    if nums[i]+nums[j] > nums[mid]: #nums[i]+nums[j] > nums[mid] -> 삼각형조건
+                        s = mid + 1
+                    else:
+                        e = mid - 1
+                ans += (e - j)
+        return ans
+        """
+        숫자 세개를 어떻게 뽑을것인가?
+        삼각형의 조건 : 짧은 두 변을 더한 길이가 긴 한 변의 길이보다 길어야한다.
+        """
