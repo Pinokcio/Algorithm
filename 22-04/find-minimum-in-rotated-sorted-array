@@ -1,0 +1,13 @@
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        length = len(nums)
+        s = 0
+        e = length - 1
+        target = nums[-1]
+        while s<=e:
+            mid = (s+e)//2
+            if nums[mid] > target:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return nums[s]
