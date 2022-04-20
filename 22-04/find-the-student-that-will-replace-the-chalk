@@ -1,0 +1,17 @@
+class Solution:
+    def chalkReplacer(self, chalk: List[int], k: int) -> int:
+        idx = 0
+        cul = chalk[:]
+        length = len(cul)
+        for i in range(1, length):
+            cul[i] += cul[i-1]
+        k %= cul[-1]
+        s = 0
+        e = length-1
+        while s<=e:
+            mid = (s+e)//2
+            if cul[mid] > k:
+                e = mid - 1
+            else:
+                s = mid + 1
+        return s
