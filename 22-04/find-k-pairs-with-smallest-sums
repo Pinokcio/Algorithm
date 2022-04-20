@@ -1,0 +1,25 @@
+from heapq import heappush, heappop
+class Solution:
+    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+        heap = []
+        ans = []
+        if not nums1 or not nums2 or not k:
+            return []
+        for value in nums1:
+            heappush(heap, [value+nums2[0],[value, nums2[0]], 0])
+        len2 = len(nums2)
+        
+        while k and heap:
+            cur = heappop(heap)
+            ans.append(cur[1])
+            k -= 1
+            idx = cur[2]
+            if idx == len2-1:
+                continue
+            heappush(heap, [cur[1][0] + nums2[idx+1], [cur[1][0], nums2[idx+1]], idx+1])
+        return ans
+"""
+heapq를 이용해서 하나씩 비교해가며 작은값들을 빼내는 문제였음
+본인은 O(N)으로 해결하려다가 안돼서 포기함.
+위 해결법은 O(NlogN)
+"""
