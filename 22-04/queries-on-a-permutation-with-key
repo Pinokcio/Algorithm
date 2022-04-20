@@ -1,0 +1,32 @@
+class Solution:
+    def processQueries(self, queries: List[int], m: int) -> List[int]:
+        flag = [-1 for _ in range(m)]
+        ans = []
+        for e,q in enumerate(queries):
+            if flag[q-1] == -1:
+                flag[q-1] = e
+                cnt = 0
+                st = set()
+                for i in range(e):
+                    if queries[i] > q and queries[i] not in st:
+                        st.add(queries[i])
+                        cnt += 1
+                ans.append(q-1+cnt)
+            else:
+                cnt = 0
+                st = set()
+                for i in range(flag[q-1]+1, e):
+                    if queries[i] not in st:
+                        st.add(queries[i])
+                        cnt += 1
+                ans.append(cnt)
+                flag[q-1] = e
+                
+        return ans
+        """
+        처음 위치는 i-1 이전에 자신보다 큰 숫자가 쿼리로 들어오면 그 수만큼 뒤로가게됨
+        즉 4의 처음위치는 4-1이므로 3
+        1은 이전에 자신보다 큰 숫자인 4가 쿼리로 들어왔으므로 1-1+1 = 1
+        2는 2-1+1 = 2
+        한번 쿼리로 호출되면 그 이후로는 자신이 호출되고 그 이후로 호출될 때까지 그 사이에 호출된 수만큼 뒤로 밀려남
+        """
