@@ -1,0 +1,15 @@
+import math
+class Solution:
+    def minimumSize(self, nums: List[int], maxOperations: int) -> int:
+        s = 1
+        e = max(nums)
+        while s<=e:
+            mid = (s+e)//2
+            cnt = 0
+            for n in nums:
+                cnt += math.ceil(n/mid)-1
+            if cnt > maxOperations:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return s
