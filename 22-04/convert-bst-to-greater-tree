@@ -1,0 +1,22 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+def revorder(cur, s):
+    sum = 0
+    if cur is None:
+        return None
+    if cur.right is not None:
+        sum += revorder(cur.right, s)
+    sum += cur.val
+    cur.val = sum + s
+    if cur.left is not None:
+        sum += revorder(cur.left, sum + s)
+    return sum
+
+class Solution:
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        revorder(root, 0)
+        return root
