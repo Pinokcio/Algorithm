@@ -1,0 +1,19 @@
+class Solution:
+    def maxDistance(self, position: List[int], m: int) -> int:
+        s = 1
+        e = max(position)
+        position.sort()
+        length = len(position)
+        while s<=e:
+            mid = (s+e)//2
+            idx = position[0]
+            cnt = 1
+            for i in range(length):
+                if position[i] - idx >= mid:
+                    idx = position[i]
+                    cnt += 1
+            if cnt >= m:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return e
