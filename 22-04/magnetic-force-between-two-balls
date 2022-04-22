@@ -17,3 +17,7 @@ class Solution:
             else:
                 e = mid - 1
         return e
+    """
+    '최대값이 최소'가 되는 거리를 구하는 문제
+    즉 같은 parametric 조건을 만족하는 수 중에서도 가장 오른쪽에 위치한 값을 구해야함
+    """
