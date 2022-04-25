@@ -1,0 +1,19 @@
+import math
+class Solution:
+    def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
+        s = 1
+        e = max(dist)*100
+        while s<=e:
+            mid = (s+e)//2
+            sums = 0
+            for n in dist[:-1]:
+                sums += math.ceil(n/mid)
+            sums += math.ceil(dist[-1] * 10**2 / mid) / 10**2
+            sums = round(sums, 2)
+            if sums > hour:
+                s = mid + 1
+            else:
+                e = mid - 1
+        if s > max(dist)*100:
+            return -1
+        return s
