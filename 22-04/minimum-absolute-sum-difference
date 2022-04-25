@@ -1,0 +1,26 @@
+class Solution:
+    def minAbsoluteSumDiff(self, nums1: List[int], nums2: List[int]) -> int:
+        s_nums2 = [[nums2[i], i] for i in range(len(nums2))]
+        s_nums1 = sorted(nums1)
+        len_n1 = len(nums1)
+        ans = 0
+        for idx, n in enumerate(nums2):
+            s = 0
+            e = len_n1-1
+            while s<=e:
+                mid = (s+e)//2
+                if n > s_nums1[mid]:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            temp = 0
+            if s >= len_n1:
+                temp = abs(n - s_nums1[e])
+            elif e < 0:
+                temp = abs(n - s_nums1[s])
+            else:
+                temp = min(abs(n-s_nums1[e]), abs(n-s_nums1[s]))
+            ans = max(ans, abs(abs(nums1[idx] - nums2[idx]) - temp))
+        sums = sum([abs(nums1[i] - nums2[i]) for i in range(len_n1)]) - ans
+        return sums % (10**9 + 7)
+                       
