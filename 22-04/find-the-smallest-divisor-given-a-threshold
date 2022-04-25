@@ -1,0 +1,21 @@
+import math
+class Solution:
+    def smallestDivisor(self, nums: List[int], threshold: int) -> int:
+        s = 1
+        e = max(nums)
+        while s<=e:
+            mid = (s+e)//2
+            sums = 0
+            for n in nums:
+                sums += math.ceil(n/mid) 
+            if sums > threshold:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return s
+        
+        
+        
+    """
+    sum of division's result가 threshold보다 작거나 같은 수 중 divisor이 가장 작은 수
+    """
