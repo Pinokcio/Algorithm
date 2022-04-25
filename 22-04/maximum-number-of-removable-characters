@@ -1,0 +1,38 @@
+from collections import defaultdict, Counter, deque
+class Solution:
+    def maximumRemovals(self, s: str, p: str, removable: List[int]) -> int:
+        dic = defaultdict(list)
+        len_c = Counter()
+        for e, n in enumerate(s):
+            dic[n].append(e)
+            len_c[n] += 1
+        
+        s = 0
+        e = len(removable)
+        while s<=e:
+            mid = (s+e)//2
+            st = set(removable[:mid])
+            counter = Counter()
+            flag = 0
+            bef = -1
+            for i in p:
+                if i in dic:
+                    if counter[i] >= len_c[i]:
+                        flag = 1
+                        break
+                    tmp = dic[i][counter[i]]
+                    counter[i] += 1
+                    while tmp < bef or tmp in st:
+                        if counter[i] >= len_c[i]:
+                            flag = 1
+                            break
+                        tmp = dic[i][counter[i]]    
+                        counter[i] += 1
+                    if flag:
+                        break
+                bef = tmp
+            if flag == 1:
+                e = mid - 1
+            else:
+                s = mid + 1
+        return e
