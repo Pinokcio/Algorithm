@@ -1,0 +1,38 @@
+from collections import deque
+class Solution:
+    def initParent(self, length):
+        self.parent = [i for i in range(length)]
+        
+    def getParent(self, n):
+        if self.parent[n] == n:
+            return n
+        self.parent[n] = self.getParent(self.parent[n])
+        return self.parent[n]
+    
+    def union(self, a, b):
+        p_a = self.getParent(a)
+        p_b = self.getParent(b)
+        if p_a > p_b:
+            self.parent[a] = p_b
+        else:
+            self.parent[b] = p_a
+            
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        length = len(points)
+        li = []
+        for i in range(length):
+            for j in range(i+1, length):
+                if i!=j:
+                    li.append([abs(points[i][0]-points[j][0]) + abs(points[i][1]-points[j][1]), i, j])
+        li.sort()
+        q = deque(li)
+        self.initParent(length)
+        ans = 0
+        while q:
+            tmp = q.popleft()
+            p_a = self.getParent(tmp[1])
+            p_b = self.getParent(tmp[2])
+            if p_a != p_b:
+                self.union(p_a, p_b)
+                ans += tmp[0]
+        return ans
