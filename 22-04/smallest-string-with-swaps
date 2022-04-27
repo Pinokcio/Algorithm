@@ -1,0 +1,37 @@
+from collections import defaultdict, deque
+class Solution:
+    def initParent(self, length):
+        self.parent = [i for i in range(length)]
+
+        
+    def getParent(self, n):
+        if self.parent[n] == n:
+            return n
+        self.parent[n] = self.getParent(self.parent[n])
+        return self.parent[n]
+    
+    def union(self, a, b):
+        p_a = self.getParent(a)
+        p_b = self.getParent(b)
+        if p_a > p_b:
+            self.parent[p_a] = p_b
+        else:
+            self.parent[p_b] = p_a
+            
+    def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
+        length = len(s)
+        self.initParent(length)
+        for p in pairs:
+            p_a = self.getParent(p[0])
+            p_b = self.getParent(p[1])
+            if p_a != p_b:
+                self.union(p_a, p_b)
+        dic = defaultdict(list)
+        ans = [self.getParent(i) for i in range(length)]
+        for i, p in enumerate(self.parent):
+            dic[p].append(s[i])
+        for d in dic:
+            dic[d] = deque(sorted(dic[d]))
+        for i in range(len(ans)):
+            ans[i] = dic[ans[i]].popleft()
+        return "".join(ans)
