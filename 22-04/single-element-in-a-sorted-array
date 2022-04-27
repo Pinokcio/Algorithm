@@ -1,0 +1,16 @@
+import math
+class Solution:
+    def singleNonDuplicate(self, nums: List[int]) -> int:
+        length = len(nums)
+        s = 0
+        e = length-2
+        if length == 1:
+            return nums[0]
+        while s<=e:
+            mid = (s+e)//2
+            mid -= mid%2
+            if nums[mid] == nums[mid+1]:
+                s = mid + 2
+            else:
+                e = mid - 1
+        return nums[s]
