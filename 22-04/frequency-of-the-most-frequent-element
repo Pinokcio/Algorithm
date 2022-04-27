@@ -1,0 +1,41 @@
+class Solution:
+    def maxFrequency(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        length = len(nums)
+        arr = [0 for _ in range(length-1)]
+        for i in range(1, length):
+            arr[i-1] = nums[i] - nums[i-1]
+        length = len(arr)
+        s = 0
+        e = length
+        while s<=e:
+            mid = (s+e)//2
+            res = 0
+            tmp = 0
+            for i in range(0, mid):
+                tmp += arr[i]
+                res += arr[i]*(i+1) 
+            idx = 0
+            minn = res
+            for i in range(1, length-mid+1):
+                res -= tmp
+                tmp -= arr[i-1]
+                tmp += arr[i+mid-1]
+                res += arr[i+mid-1]*mid
+                if minn > res:
+                    minn = res
+                    idx = i
+            if minn > k:
+                e = mid - 1
+            else:
+                s = mid + 1
+        return s
+            
+"""
+max frequency를 구하는게 목적이므로 frequency를 mid로 두는 것까지는 순조로웠음.
+문제는 frequency만큼을 반복할 수 있는 i가 무엇인지를 구하는 것이었는데 이 파트를 O(N)으로 구현해야 O(NlogN)으로 해결 가능하다.
+각 요소의 차이만큼을 저장하는 배열 arr을 선언하고 arr을 0부터 mid까지 더한 tmp를 선언.
+또한 각 요소는 i와의 거리에 비례하여 가중치를 가지므로 가중치까지 곱한 변수 res를 선언한다.
+한 칸씩 슬라이드 할 때 마다 res에서 tmp를 빼고 가장 최근 arr을 가중치만큼 곱하여 더해준다. tmp도 최신으로 가장 오래된 요소는 빼고 최근 요소를 더하여 갱신해준다.
+해당 과정을 반복하면서 해당 frequency에서 최소가 되는 값 minn을 구하고 minn이 k보다 크면 mid를 작은쪽으로 움직이고, 작으면 mid를 큰쪽으로 움직인다. 
+"""
