@@ -1,0 +1,36 @@
+class Solution:
+    def waysToSplit(self, nums: List[int]) -> int:
+        length = len(nums)
+        cul_nums = [i for i in nums]
+        cul_nums[0] = nums[0]
+        for i in range(1, length):
+            cul_nums[i] += cul_nums[i-1]
+        ans = 0
+        for i in range(0, length-2): #left = cul_nums[i]
+            s = i+1
+            e = length-2
+            while s<=e:
+                mid = (s+e)//2
+                if cul_nums[mid] < 2*cul_nums[i]:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            t1 = s #left가 i일때 가능한 mid의 최솟값 (right 값 고려 x)
+            s = t1
+            e = length-2
+            while s<=e: #right조건을 만족하는 mid 구하기
+                mid = (s+e)//2
+                if cul_nums[-1] >= 2*cul_nums[mid]-cul_nums[i]:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            t2 = e
+            ans += (t2-t1+1)
+        return ans % (10**9+7)
+ 
+ """
+ i(left)부분을 고정하고, mid의 범위를 이분탐색을 통해 구한다.
+ 제일 작은 i+1부터 mid까지의 누적합이 i까지의 누적합까지보다 크거나 같아야하고
+ 제일 큰 mid까지의 누적합이 mid+1부터 끝까지의 누적합(right)보다 작거나 같아야한다.
+ 이때 left, mid, right가 모두 최소 한 개 이상이므로 범위 설정을 잘해주어야한다. <- 이 부분을 실수해서 오래 해맴
+ """
