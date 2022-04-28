@@ -1,0 +1,32 @@
+from collections import deque
+import math
+class Solution:
+    def minimumEffortPath(self, heights: List[List[int]]) -> int:
+        dx = [1, 0, -1, 0]
+        dy = [0, 1, 0, -1]
+        q = deque()
+        q.append([0, 0, 0])
+        len_y = len(heights)
+        len_x = len(heights[0])
+        minn = math.inf
+        arr = [[math.inf for _ in range(len_x)] for _ in range(len_y)]
+        while q:
+            cur = q.popleft()
+            if cur[2] > arr[cur[0]][cur[1]]:
+                continue
+            if cur[0] == len_y-1 and cur[1] == len_x-1:
+                minn = min(minn, cur[2])
+                continue
+            for i in range(4):
+                ny = cur[0] + dy[i]
+                nx = cur[1] + dx[i]
+                if 0<=ny<len_y and 0<=nx<len_x:
+                    nxt_abs_diff = abs(heights[cur[0]][cur[1]] - heights[ny][nx])
+                    nxt_abs_diff = max(nxt_abs_diff, cur[2])
+                    if arr[ny][nx] > nxt_abs_diff:
+                        arr[ny][nx] = nxt_abs_diff
+                        q.append([ny, nx, nxt_abs_diff])
+        return minn
+        
+#arr[y][x]를 최솟값으로 갱신해주면서 해당 값보다 크면 append하지 않으며, pop했을 때도 확인하여 갱신되기 이전에 값이 들어온 것으로 확인되면(현재 arr값보다 cur[2]값이 더 크면)
+#continue해서 해당 반복문을 넘긴다.
