@@ -1,0 +1,30 @@
+class Solution:
+    def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+        length = len(difficulty)
+        ans = 0
+        tmp = [[profit[i], difficulty[i]] for i in range(length)]
+        tmp.sort(key = lambda x : [x[1], x[0]])
+        maxn = tmp[0][0]
+        for i in range(1, length):
+            if tmp[i][0] < maxn:
+                tmp[i][0] = maxn
+            else:
+                maxn = tmp[i][0]
+        for w in worker:
+            s = 0
+            e = length-1
+            while s<=e:
+                mid = (s+e)//2
+                if w >= tmp[mid][1]:
+                    s = mid + 1
+                else:
+                    e = mid - 1
+            if e >= 0:
+                ans += tmp[e][0]
+        return ans
+        
+"""
+worker에 따라 가능한 최대한 큰 difficulty를 고른다.
+이 때 difficulty와 profit이 비례하지않으므로 difficulty가 큰 것보다 profit이 작을수도 있다.
+이를 해결하기 위해 해당 difficulty이하로 얻을 수 있는 profit 중 가장 큰 것으로 difficulty 별 profit을 업데이트한다.
+"""
