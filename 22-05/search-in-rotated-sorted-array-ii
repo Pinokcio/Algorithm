@@ -1,0 +1,23 @@
+from collections import deque
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        def binarysearch(nums, s, e, target):
+            mid = (s+e)//2
+            if s > e:
+                return False
+            elif nums[mid] == target:
+                return True
+            
+            if nums[s] < nums[mid]:
+                if nums[s] <= target < nums[mid]:
+                    return binarysearch(nums, s, mid-1, target)
+                else:
+                    return binarysearch(nums, mid+1, e, target)
+            elif nums[mid] < nums[e]:
+                if nums[mid] < target <= nums[e]:
+                    return binarysearch(nums, mid+1, e, target)
+                else:
+                    return binarysearch(nums, s, mid-1, target)
+            else:
+                return binarysearch(nums, s, mid-1, target) or binarysearch(nums,mid+1,e,target)
+        return binarysearch(nums, 0, len(nums)-1, target)
