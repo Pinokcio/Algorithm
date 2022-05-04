@@ -1,0 +1,16 @@
+from collections import defaultdict
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        dic = defaultdict(int)
+        for n in nums:
+            dic[n] += 1
+        ans = 0
+        for n in nums:
+            if n in dic and dic[n]>0 and k-n in dic and dic[k-n] >0:
+                if n == k-n:
+                    if dic[n] <= 1:
+                        continue
+                dic[n] -= 1
+                dic[k-n] -= 1
+                ans += 1
+        return ans
