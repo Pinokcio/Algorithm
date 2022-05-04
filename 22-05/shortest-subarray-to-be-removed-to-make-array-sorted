@@ -1,0 +1,31 @@
+class Solution:
+    def findLengthOfShortestSubarray(self, arr: List[int]) -> int:
+        left = 0
+        right = len(arr)-1
+        while left < right and arr[left] <= arr[left+1]:
+            left += 1
+        if left == len(arr)-1: #전체가 오름차순 정렬
+            return 0
+        while right > left and arr[right] >= arr[right-1]:
+            right -= 1
+        if left == right: 
+            return 0
+        #0부터left까지 오름차순, right부터 len(arr)-1까지 오름차순
+        minn = min(len(arr)-left-1, right)
+        j = right
+        for i in range(left+1):
+            if arr[i] <= arr[j]:
+                minn = min(minn, j - i - 1)
+            elif j < len(arr)-1:
+                j += 1
+            else:
+                break
+        return minn
+"""
+경우의 수는 크게 셋 있음
+1. non-decreasing이 시작부분에만 하나 있는 경우
+2. non-decreasing이 끝부분에만 하나 있는 경우
+3. non-decreasing이 둘 이상 있는 경우
+    3.1 시작과 끝 부분이 non-decreasing인 경우
+    3.2 시작과 끝 부분 중 하나라도 non-decreasing이 아닌 경우
+"""
