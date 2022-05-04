@@ -1,5 +1,5 @@
-class Solution(object):
-    def lengthOfLongestSubstring(self, s):
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
         """
         :type s: str
         :rtype: int
@@ -12,4 +12,12 @@ class Solution(object):
                 l = max(dic[s[i]]+1, l)
             dic[s[i]] = i
             maxn = max(maxn, i - l + 1)
+            print(l, maxn)
         return maxn
+    """
+    dic에는 character의 index를 저장한다.
+    l은 가장 중복된 character중에 가장 최근에 중복된 character의 위치이다.
+    이 때 이전에 저장했던 character면 해당 위치+1 과 l을 비교하여 더 큰것으로 l을 업데이트한다.
+    maxn은 현재 위치에서 가장 최근에 중복된 단어의 위치를 뺀 것의 길이이다.
+    즉 가장 최근에 중복이 일어난 l+1 ~ i 까지는 중복이 일어나지 않았다는 의미이다.
+    """
