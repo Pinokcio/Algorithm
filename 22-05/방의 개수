@@ -1,0 +1,62 @@
+def solution(arrows):
+    answer = 0
+    dx = [0, 1, 1, 1, 0, -1, -1, -1]
+    dy = [1, 1, 0, -1, -1, -1, 0, 1]
+    length = len(arrows)
+    vis = set()
+    dirvis = set()
+    cur = [0, 0]
+    vis.add((0, 0))
+    for a in arrows:
+        ny = cur[0] + dy[a]
+        nx = cur[1] + dx[a]
+        if (ny, nx) in vis: #방문했던 곳인데
+            if (ny, nx, a) not in dirvis and (cur[0], cur[1], (a+4)%8) not in dirvis: #해당 방향으로는 방문 안했을 경우
+                
+                if (a == 1 and (ny-1, nx, 3) in dirvis) or (a == 1 and (ny, nx-1, 7) in dirvis) or (a == 3 and (ny+1, nx, 1) in dirvis) or (a == 3 and (ny, nx-1, 5) in dirvis) or (a == 5 and (ny, nx+1, 3) in dirvis) or (a == 5 and (ny+1, nx, 7) in dirvis) or (a == 7 and (ny, nx+1, 1) in dirvis) or (a == 7 and (ny-1, nx, 5) in dirvis):
+                    answer += 1
+                answer += 1
+                dirvis.add((ny, nx, a))
+        else: #방문하지 않았던 곳이면
+            
+            if (a == 1 and (ny-1, nx, 3) in dirvis) or (a == 1 and (ny, nx-1, 7) in dirvis) or (a == 3 and (ny+1, nx, 1) in dirvis) or (a == 3 and (ny, nx-1, 5) in dirvis) or (a == 5 and (ny, nx+1, 3) in dirvis) or (a == 5 and (ny+1, nx, 7) in dirvis) or (a == 7 and (ny, nx+1, 1) in dirvis) or (a == 7 and (ny-1, nx, 5) in dirvis):
+                answer += 1
+            vis.add((ny, nx))
+            dirvis.add((ny, nx, a))
+        cur[0] = ny
+        cur[1] = nx
+    return answer
+
+
+
+"""
+import sys
+sys.setrecursionlimit(10**6)
+def solution(arrows):
+    def dfs(arr, vis, cury, curx):
+        if vis[cury][curx] == 1:
+            return 1
+        vis[cury][curx] = 1
+        ret = 0
+        for i in arr[cury][curx]:
+            ret += dfs(arr, vis, i[0], i[1])
+            print(cury, curx, i[0], i[1])
+        return ret
+    
+    answer = 0
+    dx = [0, 1, 1, 1, 0, -1, -1, -1]
+    dy = [1, 1, 0, -1, -1, -1, 0, 1]
+    length = len(arrows)
+    arr = [[[] for _ in range(length*2)] for _ in range(length*2)]
+    cur = [length, length]
+    for a in arrows:
+        ny = cur[0] + dy[a]
+        nx = cur[1] + dx[a]
+        arr[cur[0]][cur[1]].append([ny, nx])
+        cur[0] = ny
+        cur[1] = nx
+    vis = [[0 for _ in range(length+1)] for _ in range(length+1)]
+    answer = dfs(arr, vis, cur[0], cur[1])
+    print(answer)
+    return answer
+"""
