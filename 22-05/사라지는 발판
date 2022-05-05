@@ -1,0 +1,40 @@
+def solution(board, aloc, bloc):
+    def solve(block, vis, cury, curx, opsy, opsx, len_y, len_x) -> int:
+        dx = [1, 0, -1, 0]
+        dy = [0, 1, 0, -1]
+        if vis[cury][curx]:
+            return 0 #패배는 0 리턴
+        
+        ret = 0 #지금턴의 결과. 패배로 초기화(for문에서 아무곳으로도 나아가지 못하면 지기 때문)
+        val = 0 #다음턴으로부터 온 결과, 더 나아가 val%2 == 0, 즉 내턴을 기준으로 짝수턴으로부터 온 결과는 내 패배이다.
+        for i in range(4):
+            ny = cury + dy[i]
+            nx = curx + dx[i]
+            if ny >= 0 and nx >= 0 and ny<len_y and nx<len_x and vis[ny][nx] == 0 and block[ny][nx] == 1:
+                vis[cury][curx] = 1
+                val = solve(block, vis, opsy, opsx, ny, nx, len_y, len_x) + 1
+                vis[cury][curx] = 0
+                
+                if ret % 2 == 0 and val % 2 == 1: #지는 결과밖에 없었는데 이기는 결과가 생겼을 경우 해당 경우로 고려함
+                    ret = val 
+                elif ret % 2 == 0 and val % 2 == 0: #이전에도 졌고, 지금도 지면 최대한 늦게 져야함
+                    ret = max(ret, val)
+                elif ret % 2 == 1 and val % 2 == 1: #이전에도 이겼고, 지금은 이기면 최대한 빨리 이겨야함
+                    ret = min(ret, val)
+        return ret
+            
+    len_y = len(board)
+    len_x = len(board[0])
+    vis = [[0 for _ in range(len_x)] for _ in range(len_y)]
+    return solve(board, vis, aloc[0], aloc[1], bloc[0], bloc[1], len_y, len_x)
+    
+    
+
+"""
+룰 : 현 위치에서 이동하면 이전에 있던 자리의 블록은 0이 됨
+1. 현 위치에서 이동할 블록이 없으면 패배(주변의 모든 블록이 전부 0 임)
+2. 현 위치의 블록이 상대의 움직임에 의해 0이 됨(같은 곳에 있다가 상대가 먼저 이동한 경우)
+서로 최선의 플레이를 하는 경우를 계산할 것
+- 이기는 플레이어는 자신이 이기는 경우 결과의 min을 출력
+- 지는 플레이어는 자신이 지는 경우 결과의 max를 출력
+"""
