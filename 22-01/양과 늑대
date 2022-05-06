@@ -34,3 +34,32 @@ def solution(info, edges):
     return answer
     
     #처음에 bfs로 푸는데 잘 안풀려서 다른 곳에서 힌트를 얻고 dfs로 푼 문제
+    maxn = 0
+def solution(info, edges):
+    def dfs(arr, info, cur, sheep, wolf, st):
+        sheep += int(info[cur]^1)
+        wolf += info[cur]
+        global maxn
+        maxn = max(sheep, maxn)
+        print(cur, sheep, wolf, maxn)
+        if wolf >= sheep: #노드 통과 여부
+            return
+        
+        st_t = st.copy()
+        st_t.remove(cur) #현재 노드는 통과할 수 있으므로 목록에서 삭제
+        for i in arr[cur]: #현재 노드의 하위 노드는 밝혀진 바가 없으므로 추가
+            st_t.add(i)
+        for i in st_t:
+            dfs(arr, info, i, sheep, wolf, st_t) 
+        
+        
+        
+    length = len(info)
+    arr = [[] for _ in range(length)]
+    for e in edges:
+        arr[e[0]].append(e[1])
+    st = set()
+    st.add(0)
+    dfs(arr, info, 0, 0, 0, st)
+    global maxn
+    return maxn
