@@ -1,0 +1,20 @@
+from itertools import permutations, combinations
+import numpy as np
+class Solution:
+    def nextBeautifulNumber(self, n: int) -> int:
+        li = list(map(str,[1,22,122,333,1333,4444,14444,22333,55555,155555,666666,122333, 224444,1224444]))
+        tmp = list(map(int,li[:]))
+        for l in li:
+            for p in permutations(list(l), len(list(l))):
+                tmp.append(int("".join(p)))
+        s = 0
+        e = len(tmp)-1
+        tmp.sort()
+        
+        while s<=e:
+            mid = (s+e)//2
+            if n >= tmp[mid]:
+                s = mid + 1
+            else:
+                e = mid - 1
+        return tmp[s]
