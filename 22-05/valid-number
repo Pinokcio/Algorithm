@@ -1,0 +1,80 @@
+class Solution:
+    def isNumber(self, s: str) -> bool:
+        def isDecimal(s):
+            len_s = len(s)
+            if len_s == 0:
+                return False
+            tmp = []
+            if s[0] == '+' or s[0] == '-':
+                len_s -= 1
+                tmp = s[1:].split(".")
+            else:
+                tmp = s.split(".")
+            if len_s == 0:
+                return False
+            len_t = 0
+            for t in tmp:
+                len_t += len(t)
+                for i in t:
+                    if not str.isdigit(i):
+                        return  False
+            if len_s - len_t > 1 or len_t == 0:
+                return False
+            return True
+        
+        
+        def isInteger(s):
+            len_s = len(s)
+            if len_s == 0:
+                return False
+            tmp = []
+            if s[0] == "+" or s[0] == "-":
+                len_s -= 1
+                tmp = s[1:]
+            else:
+                tmp = s
+            if len_s == 0:
+                return False
+            len_t = 0
+            for t in tmp:
+                for i in t:
+                    len_t += len(t)
+                    if not str.isdigit(i):
+                        return False
+            if len_s - len_t > 1 or len_t == 0:
+                return False
+            return True
+        
+        
+        tmp_e1 = s.split('e')
+        tmp_e2 = s.split('E')
+        if len(tmp_e1) == 2:
+            if (isDecimal(tmp_e1[0]) or isInteger(tmp_e1[0])) and isInteger(tmp_e1[1]):
+                return True
+        elif len(tmp_e2) == 2:
+            if (isDecimal(tmp_e2[0]) or isInteger(tmp_e2[0])) and isInteger(tmp_e2[1]):
+                return True
+        else:    
+            if (isDecimal(s) or isInteger(s)):
+                return True
+        return False
+        
+"""
+string이 유효한 숫자인지 따지는 문제
+1. 10진수 혹은 정수임
+2. e or E 뒤에 정수가 따라붙을 수 있음
+즉, AeB 꼴로 나타나는데 A는 10진수 혹은 정수고, B는 정수여야 한다. (e로 split 한 후 정수인지 10진수인지 확인)
+또 10진수는 .으로 나뉠 수 있다. (10진수 확인시 .으로 split)
+
+
+
+10진수의 경우
+- 부호가 붙을 수 있음
+- 하나 이상의 숫자 뒤에 .이 나옴
+- 하나 이상의 숫자 뒤에 .이 나오고 그 뒤에 또 하나 이상의 숫자가 나올 수 있음
+- . 뒤에 하나 이상의 숫자가 나올 수 있음
+
+정수의 경우
+- 부호가 붙을 수 있음
+- 하나 이상의 숫자로 구성
+"""
