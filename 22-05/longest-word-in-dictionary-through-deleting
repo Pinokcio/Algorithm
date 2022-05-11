@@ -1,0 +1,22 @@
+class Solution:
+    def findLongestWord(self, s: str, dictionary: List[str]) -> str:
+        maxn = 0
+        ans = -1
+        length = len(s)
+        for e, d in enumerate(dictionary):
+            j = 0
+            len_d = len(d)
+            for i in range(length):
+                if s[i] == d[j]:
+                    j += 1
+                    if j == len_d:
+                        if len_d > maxn:
+                            maxn = len_d
+                            ans = e
+                        elif len_d == maxn:
+                            if d < dictionary[ans]:
+                                ans = e
+                        break
+        if ans == -1:
+            return ""
+        return dictionary[ans]
