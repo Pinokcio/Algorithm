@@ -1,0 +1,17 @@
+class Solution:
+    def minNonZeroProduct(self, p: int) -> int: 
+        M = 10**9+7
+        def power(x,n):
+                if n==0:
+                    return 1
+                if n%2==0:
+                    tmp = power(x, n//2)
+                    return tmp*tmp%M
+                else:
+                    tmp = power(x, (n-1)//2)
+                    return (x*tmp*tmp)%M
+        k = 1<<p
+        t = (k-2)
+        n = t//2
+        q = power(t, n)
+        return (q * (k-1)) % M
