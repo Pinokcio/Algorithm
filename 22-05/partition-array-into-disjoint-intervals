@@ -1,0 +1,13 @@
+class Solution:
+    def partitionDisjoint(self, nums: List[int]) -> int:
+        length = len(nums)
+        arr = [0 for _ in range(length)]
+        minn = nums[-1]
+        for i in range(length-1, -1, -1):
+            minn = min(minn, nums[i])
+            arr[i] = minn
+        maxn = 0
+        for i in range(length-1):
+            maxn = max(maxn, nums[i])
+            if maxn <= arr[i+1]:
+                return i+1
