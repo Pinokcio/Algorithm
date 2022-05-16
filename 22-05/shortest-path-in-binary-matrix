@@ -1,0 +1,24 @@
+from collections import deque
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        dx = [1, 1, 0, -1, -1, -1, 0, 1]
+        dy = [0, 1, 1, 1, 0, -1, -1, -1]
+        q = deque()
+        len_y = len(grid)
+        len_x = len(grid[0])
+        if grid[0][0] == 1 or grid[len_y-1][len_x-1] == 1:
+            return -1
+        q.append([[0, 0], 1])
+        
+        while q:
+            cur, cnt = q.popleft()
+            if cur == [len_y-1, len_x-1]:
+                return cnt
+            for i in range(8):
+                ny = cur[0] + dy[i]
+                nx = cur[1] + dx[i]
+                if 0<=nx<len_x and 0<=ny<len_y:
+                    if grid[ny][nx] == 0:
+                        grid[ny][nx] = 1
+                        q.append([[ny,nx], cnt+1])
+        return -1
