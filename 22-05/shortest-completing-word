@@ -1,0 +1,18 @@
+from collections import Counter
+class Solution:
+    def shortestCompletingWord(self, licensePlate: str, words: List[str]) -> str:
+        dic = {}
+        counter = Counter()
+        for l in licensePlate:
+            if l.isalpha():
+                counter[str.lower(l)] += 1
+        words.sort(key = lambda x : len(x))
+        for w in words:
+            tmp = Counter()
+            for l in w:
+                tmp[l] += 1
+            for c in counter:
+                if tmp[c] < counter[c]:
+                    break
+            else:
+                return w
