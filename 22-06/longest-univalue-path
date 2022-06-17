@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def longestUnivaluePath(self, root: Optional[TreeNode]) -> int:
+        self.ans = 0
+        
+        def arrow_length(node):
+            if not node: return 0
+            left_length = arrow_length(node.left)
+            right_length = arrow_length(node.right)
+            left_arrow = right_arrow = 0
+            if node.left and node.left.val == node.val:
+                left_arrow = left_length + 1
+            if node.right and node.right.val == node.val:
+                right_arrow = right_length + 1
+            self.ans = max(self.ans, left_arrow + right_arrow)
+            return max(left_arrow, right_arrow)
+        
+        arrow_length(root)
+        return self.ans
+"""
+재귀로 해결
+현재 노드가 None이면 0을 리턴
+0이 아니면 left side의 child node 및 right side의 child node를 각각 계산
+계산 과정에서 현재 노드와 child node의 val이 같으면 +1
+현재 노드 위치에서 알 수 있는 것은 지금까지의 최장 노드 길이 및 현재 내가 이어져있는 노드에 대한 최장 노드 길이이다.
+따라서 이 중 더 긴 것으로 정답을 업데이트해준다.
+"""
